@@ -3,17 +3,25 @@
 
 ---
 
+
 ## 介绍
 ```.text
 python项目开发通用工具包
 ```
 
+
 ## 项目设计
+```.text
+
+```
 
 
 
 
 ## 项目部署
+```.text
+
+```
 
 
 ## 常用命令
@@ -25,7 +33,16 @@ poetry init
 添加与更新依赖项
 poetry add requests
 poetry update
-
+只想更新特定的依赖项
+poetry update requests
+想安装 requests 的最新版本，而不受当前版本约束的限制
+poetry add requests@latest
+删除依赖
+poetry remove requests
+查看已安装的依赖
+poetry show
+查看环境信息
+poetry env info
 ```
 
 
