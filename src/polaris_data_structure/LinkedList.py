@@ -26,6 +26,7 @@ class LinkedList:
     def delete(self, value):
         current = self.head
         prev = None
+
         while current and current.value != value:
             prev = current
             current = current.next
@@ -36,6 +37,7 @@ class LinkedList:
 
     def print_list(self):
         current = self.head
+
         while current:
             print(current.value, end=" -> ")
             current = current.next
