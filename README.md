@@ -36,6 +36,28 @@ python项目开发通用工具包
 ```.text
 
 ```
+### 枚举enums模块
+```.text
+
+```
+### 异常处理exception模块
+```.text
+
+```
+### 日志logger模块
+```.text
+
+```
+### 消息推送message模块
+```.text
+
+```
+### 消息中间件mq模块
+```.text
+
+```
+
+
 
 ## 项目部署
 ```.text
@@ -50,9 +72,13 @@ pip install dist/polaris_common_core-0.1.0-py3-none-any.whl
 或在另一个使用 Poetry 的项目中
 poetry add ../path/to/dist/polaris_common_core-0.1.0-py3-none-any.whl
 ```
-### 测试环境正式安装
+### 测试环境安装
 ```.text
 pip install -i https://test.pypi.org/simple/ polaris-common-core
+```
+### 正式环境安装
+```.text
+pip install -i https://pypi.org/simple/ polaris-common-core
 ```
 
 
