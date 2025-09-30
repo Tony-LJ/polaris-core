@@ -61,7 +61,15 @@ python项目开发通用工具包
 
 ## 项目部署
 ```.text
-
+ Python 源码
+   │
+ 加密/编译（Pyarmor、Cython、Nuitka）
+   │
+ 打包（PyInstaller/poetry）
+   │
+ ️加固（混淆、壳保护、完整性校验）
+   │
+ 发布（本地安装包、网盘等分享）
 ```
 
 ## 本地化调试
@@ -151,6 +159,6 @@ Tony pypi-AgENdGVzdC5weXBpLm9yZwIkNGRhYWM1ODMtNDEwMi00ODQ1LWI3YzktODVjZjllYzEwMz
 
 ## 参考资料
 - [python之poetry模块，项目管理](https://blog.csdn.net/randy521520/article/details/135305694)
-
-
+- [利用pyinstaller_poetry简化Python应用打包](https://blog.csdn.net/weixin_32661831/article/details/146264445)
+- [Python PyInstaller 打包、Pyarmor加密等](https://www.cnblogs.com/LungGiyo/p/18868979)
 
