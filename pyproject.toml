@@ -1,7 +1,7 @@
 [project]
 name = "polaris-common-core"
-version = "0.1.0"
-description = "python项目开发通用工具包"
+version = "1.1.2"
+description = "北极星python项目开发通用工具包"
 
 authors = [
     {name = "tony",email = "luojie_dataops@126.com"}
@@ -15,7 +15,21 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "polaris_common_core", from = "src"}]
+packages = [
+    {include = "polaris_common_core", from = "src"},
+#    {include = "ai", from = "src"},
+#    {include = "api", from = "src"},
+#    {include = "commom", from = "src"},
+#    {include = "connector", from = "src"},
+#    {include = "crypto", from = "src"},
+#    {include = "enums", from = "src"},
+#    {include = "exception", from = "src"},
+    {include = "polaris_logger", from = "src"},
+#    {include = "message", from = "src"},
+#    {include = "mq", from = "src"},
+#    {include = "pyspark", from = "src"},
+#    {include = "pyflink", from = "src"}
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

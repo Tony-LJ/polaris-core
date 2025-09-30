@@ -129,6 +129,7 @@ twine upload dist/* -r pypi
   先构建后发布，以免忘记构建：
   poetry publish -r test-pypi --build
   方式2：
+  twine upload --repository testpypi --verbose dist/*
   twine upload dist/* -r testpypi
   Tony pypi-AgENdGVzdC5weXBpLm9yZwIkNGRhYWM1ODMtNDEwMi00ODQ1LWI3YzktODVjZjllYzEwMzRhAAIqWzMsIjhkMmI0YTBlLTRmZmUtNGMyNi04NGJhLTE0MmViZjgwYWQxMyJdAAAGIOHlQrxUOURhfUSJeVMNNeI_9doWDHodjuP8mk-eE7ys
   ```
@@ -148,7 +149,7 @@ twine upload dist/* -r pypi
 
 
 ## 参考资料
-
+- [python之poetry模块，项目管理](https://blog.csdn.net/randy521520/article/details/135305694)
 
 
 
