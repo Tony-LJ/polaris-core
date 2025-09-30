@@ -9,14 +9,33 @@
 python项目开发通用工具包
 ```
 
-
 ## 项目设计
 ```.text
 
 ```
 
 
+## 功能模块
+### ai模块
+```.text
 
+```
+### api处理模块
+```.text
+
+```
+### 通用工具common模块
+```.text
+
+```
+### 存储系统connector模块
+```.text
+
+```
+### 加密crypto模块
+```.text
+
+```
 
 ## 项目部署
 ```.text
@@ -31,6 +50,11 @@ pip install dist/polaris_common_core-0.1.0-py3-none-any.whl
 或在另一个使用 Poetry 的项目中
 poetry add ../path/to/dist/polaris_common_core-0.1.0-py3-none-any.whl
 ```
+### 测试环境正式安装
+```.text
+pip install -i https://test.pypi.org/simple/ polaris-common-core
+```
+
 
 ## 常用命令
 ```.text
