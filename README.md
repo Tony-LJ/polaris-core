@@ -23,6 +23,14 @@ python项目开发通用工具包
 
 ```
 
+## 本地化调试
+### 安装构建产物与本地测试
+```.text
+在构建出 .whl 包后，你可以在本地测试安装以确保其正确性
+pip install dist/polaris_common_core-0.1.0-py3-none-any.whl
+或在另一个使用 Poetry 的项目中
+poetry add ../path/to/dist/polaris_common_core-0.1.0-py3-none-any.whl
+```
 
 ## 常用命令
 ```.text

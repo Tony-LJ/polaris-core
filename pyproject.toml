@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "python项目开发通用工具包"
 
 authors = [
-    {name = "tony",email = "tony1@kinwong.com"}
+    {name = "tony",email = "luojie_dataops@126.com"}
 ]
 
 readme = "README.md"
