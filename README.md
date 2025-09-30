@@ -62,24 +62,35 @@ poetry run python <your_script.py>
 ## 发布到PyPI或私有仓库
 ### PyPI 凭据配置
 ```.text
+方式1：
 在发布前，需要配置仓库地址与登录凭据。默认的公开仓库为 pypi。如果你要上传到测试仓库（TestPyPI）进行预发布测试：
 poetry config repositories.test-pypi https://test.pypi.org/legacy/
 poetry config http-basic.test-pypi <username> <password_or_token>
 如果是正式 PyPI：
 poetry config pypi-token.pypi <your_api_token>
+
+方式2：
+twine upload dist/* -r testpypi
+twine upload dist/* -r pypi
 ```
 - [发布到 TestPyPI]()
   ```.text
+  方式1：
   先构建后发布，以免忘记构建：
   poetry publish -r test-pypi --build
+  方式2：
+  twine upload dist/* -r testpypi
+  Tony pypi-AgENdGVzdC5weXBpLm9yZwIkNGRhYWM1ODMtNDEwMi00ODQ1LWI3YzktODVjZjllYzEwMzRhAAIqWzMsIjhkMmI0YTBlLTRmZmUtNGMyNi04NGJhLTE0MmViZjgwYWQxMyJdAAAGIOHlQrxUOURhfUSJeVMNNeI_9doWDHodjuP8mk-eE7ys
   ```
 
 - [发布到正式 PyPI]()
   ```.text
+  方式1：
   确认测试无误后，即可发布到 PyPI：
   poetry publish --build
+  方式2：
+  twine upload dist/* -r pypi
   ```
-
 
 
 
