@@ -82,6 +82,7 @@ twine upload dist/* -r pypi
   twine upload dist/* -r testpypi
   Tony pypi-AgENdGVzdC5weXBpLm9yZwIkNGRhYWM1ODMtNDEwMi00ODQ1LWI3YzktODVjZjllYzEwMzRhAAIqWzMsIjhkMmI0YTBlLTRmZmUtNGMyNi04NGJhLTE0MmViZjgwYWQxMyJdAAAGIOHlQrxUOURhfUSJeVMNNeI_9doWDHodjuP8mk-eE7ys
   ```
+  ![img](/docs/imgs/642375874689070.png) </br>
 
 - [发布到正式 PyPI]()
   ```.text
