@@ -1,5 +1,5 @@
 
-# polaris_common_core
+# polaris-common-core
 
 ---
 
