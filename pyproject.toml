@@ -1,6 +1,6 @@
 [project]
-name = "polaris-common-core"
-version = "1.1.2"
+name = "polaris-core"
+version = "1.1.3"
 description = "北极星python项目开发通用工具包"
 
 authors = [
@@ -16,19 +16,19 @@ dependencies = [
 
 [tool.poetry]
 packages = [
-    {include = "polaris_common_core", from = "src"},
-#    {include = "ai", from = "src"},
-#    {include = "api", from = "src"},
-#    {include = "commom", from = "src"},
-#    {include = "connector", from = "src"},
-#    {include = "crypto", from = "src"},
-#    {include = "enums", from = "src"},
-#    {include = "exception", from = "src"},
+    {include = "polaris_core", from = "src"},
+#    {include = "polaris_ai", from = "src"},
+#    {include = "polaris_api", from = "src"},
+#    {include = "polaris_commom", from = "src"},
+#    {include = "polaris_connector", from = "src"},
+#    {include = "polaris_crypto", from = "src"},
+#    {include = "polaris_enums", from = "src"},
+#    {include = "polaris_exception", from = "src"},
     {include = "polaris_logger", from = "src"},
-#    {include = "message", from = "src"},
-#    {include = "mq", from = "src"},
-#    {include = "pyspark", from = "src"},
-#    {include = "pyflink", from = "src"}
+#    {include = "polaris_message", from = "src"},
+#    {include = "polaris_mq", from = "src"},
+#    {include = "polaris_pyspark", from = "src"},
+#    {include = "polaris_pyflink", from = "src"}
 ]
 
 [build-system]

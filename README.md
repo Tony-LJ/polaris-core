@@ -1,5 +1,5 @@
 
-# polaris-common-core
+# polaris-core
 
 ---
 
@@ -68,17 +68,17 @@ python项目开发通用工具包
 ### 安装构建产物与本地测试
 ```.text
 在构建出 .whl 包后，你可以在本地测试安装以确保其正确性
-pip install dist/polaris_common_core-0.1.0-py3-none-any.whl
+pip install dist/polaris_core-0.1.0-py3-none-any.whl
 或在另一个使用 Poetry 的项目中
-poetry add ../path/to/dist/polaris_common_core-0.1.0-py3-none-any.whl
+poetry add ../path/to/dist/polaris_core-0.1.0-py3-none-any.whl
 ```
 ### 测试环境安装
 ```.text
-pip install -i https://test.pypi.org/simple/ polaris-common-core
+pip install -i https://test.pypi.org/simple/ polaris-core==1.1.3
 ```
 ### 正式环境安装
 ```.text
-pip install -i https://pypi.org/simple/ polaris-common-core
+pip install -i https://pypi.org/simple/ polaris-core==1.1.3
 ```
 
 
