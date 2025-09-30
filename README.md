@@ -43,6 +43,12 @@ poetry remove requests
 poetry show
 查看环境信息
 poetry env info
+构建项目,这将创建一个 dist 目录，其中包含 .tar.gz 和 .whl 格式的打包文件
+poetry build
+发布项目,pyproject.toml 中配置 PyPI 的凭据，或者在命令行中输入
+poetry publish
+使用 Poetry 的虚拟环境来运行项目
+poetry run python <your_script.py>
 ```
 
 
