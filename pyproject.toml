@@ -1,7 +1,7 @@
 [project]
 name = "polaris-core"
 version = "1.1.4"
-description = "北极星python项目开发通用工具包"
+description = "北极星python项目开发通用核心工具包"
 
 authors = [
     {name = "tony",email = "luojie_dataops@126.com"}
@@ -25,6 +25,7 @@ packages = [
 #    {include = "polaris_enums", from = "src"},
 #    {include = "polaris_exception", from = "src"},
     {include = "polaris_logger", from = "src"},
+    {include = "polaris_data_structure", from = "src"},
 #    {include = "polaris_message", from = "src"},
 #    {include = "polaris_mq", from = "src"},
 #    {include = "polaris_pyspark", from = "src"},
