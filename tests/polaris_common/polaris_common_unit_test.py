@@ -4,7 +4,6 @@ from polaris_common import http_client
 
 
 if __name__ == '__main__':
-    print(" >>>>>>>>>>>>>>>>> ")
     client = http_client.HttpClient()
     status, response_text = client.get('https://h.moyanjdc.top', None)
     print(status)  # 打印HTTP状态码

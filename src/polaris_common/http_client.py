@@ -24,11 +24,9 @@ class HttpClient:
 
     def request(self, method, url, headers=None, params=None, data=None):
         response = requests.request(method, url, headers=headers, params=params, data=data)
-
         return response.status_code, response.text
 
     def get(self, url, headers=None, params=None):
-
         return self.request('GET', url, headers=headers, params=params)
 
     def post(self, url, headers=None, data=None):
@@ -37,5 +35,4 @@ class HttpClient:
         if data is not None and 'Content-Type' not in headers:
             headers['Content-Type'] = 'application/json'
             data = json.dumps(data)
-
         return self.request('POST', url, headers=headers, data=data)
