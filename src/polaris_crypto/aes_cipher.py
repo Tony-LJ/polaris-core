@@ -22,11 +22,13 @@ class AESCipher:
     def _pad(self, data):
         padder = padding.PKCS7(128).padder()
         padded_data = padder.update(data) + padder.finalize()
+
         return padded_data
 
     def _unpad(self, data):
         unpadder = padding.PKCS7(128).unpadder()
         unpadded_data = unpadder.update(data) + unpadder.finalize()
+
         return unpadded_data
 
     def encrypt(self, plaintext):
@@ -35,6 +37,7 @@ class AESCipher:
         encryptor = cipher.encryptor()
         padded_data = self._pad(plaintext.encode())
         ciphertext = encryptor.update(padded_data) + encryptor.finalize()
+
         return urlsafe_b64encode(iv + ciphertext).decode()  # 返回base64编码的字符串，便于传输和存储
 
     def decrypt(self, ciphertext):
@@ -44,6 +47,7 @@ class AESCipher:
         cipher = Cipher(algorithms.AES(self.key), modes.CBC(iv), backend=self.backend)
         decryptor = cipher.decryptor()
         decrypted_padded_data = decryptor.update(ciphertext) + decryptor.finalize()
+
         return self._unpad(decrypted_padded_data).decode()  # 返回解密后的明文
 
 

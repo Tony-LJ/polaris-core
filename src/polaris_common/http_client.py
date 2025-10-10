@@ -21,7 +21,6 @@ class HttpClient:
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
 
-
     def request(self, method, url, headers=None, params=None, data=None):
         response = requests.request(method, url, headers=headers, params=params, data=data)
         return response.status_code, response.text
