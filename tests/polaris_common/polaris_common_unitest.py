@@ -3,7 +3,7 @@
 from polaris_common import http_client
 from polaris_common import yaml_handler
 from polaris_logger import logger
-from polaris_common import polaris_string_utils, date_time_utils
+from polaris_common import polaris_string_utils, date_time_utils, regex_utils
 
 
 if __name__ == '__main__':
@@ -26,6 +26,13 @@ if __name__ == '__main__':
     pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     print(regex_utils.RegexUtils.match_pattern(pattern,email))
 
+    # 替换所有数字为#
+    text = "The price is 100 dollars and the discount is 20%"
+    print(regex_utils.RegexUtils.replace_pattern(r'\d+', '#', text))
 
+    # 从字符串中提取符合模式的部分
+    url = "https://www.example.com/path/to/page"
+    pattern = r'https?://(www\.)?([a-zA-Z0-9.-]+)'
+    print(regex_utils.RegexUtils.search_pattern(pattern, url))
 
 

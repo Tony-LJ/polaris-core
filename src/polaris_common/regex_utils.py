@@ -23,7 +23,7 @@ class RegexUtils:
     @staticmethod
     def search_pattern(pattern, string):
         """
-        正则搜素
+        从字符串中提取符合模式的部分
         :param pattern:
         :param string:
         :return:
