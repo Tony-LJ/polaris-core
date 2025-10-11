@@ -3,7 +3,7 @@
 from polaris_common import http_client
 from polaris_common import yaml_handler
 from polaris_logger import logger
-from polaris_common import polaris_string_utils, date_time_utils
+from polaris_common import polaris_string_utils, date_time_utils, regex_utils
 
 
 if __name__ == '__main__':
@@ -20,5 +20,12 @@ if __name__ == '__main__':
 
     # 日期工具测试
     print(date_time_utils.DateTimeUtils.current_datetime())
+
+    # 正则工具测试
+    email = "example@example.com"
+    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    print(regex_utils.RegexUtils.match_pattern(pattern,email))
+
+
 
 
