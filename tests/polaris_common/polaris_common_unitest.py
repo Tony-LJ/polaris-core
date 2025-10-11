@@ -3,7 +3,12 @@
 from polaris_common import http_client
 from polaris_common import yaml_handler
 from polaris_logger import logger
-from polaris_common import polaris_string_utils, date_time_utils
+import sys
+from pathlib import Path
+
+# 获取项目根目录（my_project）的绝对路径
+project_root = Path(__file__).resolve().parent.parent  # .. 表示上一级目录
+sys.path.append(str(project_root))  # 将根目录加入搜索路径
 
 
 if __name__ == '__main__':
