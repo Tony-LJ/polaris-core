@@ -29,6 +29,7 @@ class StringConvert:
         :return: 如果字符串为空则返回True，否则返回False
         """
         return value is None or value.strip() == ""
+
     def mask_phone(self, phone):
         """
         手机号隐藏
@@ -48,3 +49,27 @@ class StringConvert:
         if self.is_empty(id_card):
             return id_card
         return id_card[:2] + "**********" + id_card[-2:]
+
+    def json_to_dict(self, json_str):
+        """
+        将JSON字符串转换为字典
+        :param json_str: JSON字符串
+        :return: 字典
+        """
+        try:
+            return json.loads(json_str)
+        except json.JSONDecodeError as e:
+            self.logger.error(f"JSON字符串转换失败：{e}")
+            return {}
+
+    def dict_to_json(self, dic):
+        """
+        将字典转换为JSON字符串
+        :param dic: 字典
+        :return: JSON字符串
+        """
+        try:
+            return json.dumps(dic, ensure_ascii=False)
+        except Exception as e:
+            self.logger.error(f"字典转换JSON字符串失败：{e}")
+            return "{}"
