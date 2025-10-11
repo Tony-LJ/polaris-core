@@ -41,4 +41,25 @@ class YamlUtil:
         with open(path, "w", encoding="utf-8") as f:
             yaml.dump(data, f, Dumper=yaml.SafeDumper)
 
+    # def get(self, key, default=None):
+    #     """
+    #     获取配置项的值
+    #     :param key:
+    #     :param default:
+    #     :return:
+    #     """
+    #     return self._config.get(key, default)
+    #
+    # def update(self, key, value):
+    #     """
+    #     更新配置项的值并保存
+    #     :param key:
+    #     :param value:
+    #     :return:
+    #     """
+    #     self._config[key] = value
+    #     with open(self.file_path, 'w') as file:
+    #         yaml.dump(self._config, file)
+
+
 yamlUtil = YamlUtil()
