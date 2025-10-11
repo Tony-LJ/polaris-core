@@ -1,0 +1,50 @@
+# spring应用配置
+spring:
+#  dinger:
+#    project-id: ${spring.application.name}
+#    dingers:
+#      wetalk: # 使用企业微信机器人, 请根据自己机器人配置信息进行修改
+#        token-id: 34f51e63-9ab5-43fa-8621-377b7bf70064
+  datasource:
+    dynamic:
+      primary: PROD_MYSQL #设置默认的数据源或者数据源组,默认值即为master
+      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        PROD_MYSQL:  #PROD_MYSQL
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://10.53.0.71:3306/mysql?characterEncoding=utf-8&useSSL=false
+          username: root
+          password: LJkwhadoop2025!
+
+server:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 900MB
+      max-request-size: 900MB
+
+sftp_ubantu:
+  host: 10.53.0.71
+  port: 22
+  username: root
+  password: EEEeee111
+  remoteDir: /opt/project/springboot
+
+# 文件上传下载
+file:
+  storage:
+    # Windows
+    base-dir: D:\\project\\springboot-spark\\docs
+    # Linux
+    # base-dir: /opt/project/springboot
+
+
+# Mybatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.turing.bigdata.dao.bo
+  global-config:
+    db-config:
+      table-underline: true
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
