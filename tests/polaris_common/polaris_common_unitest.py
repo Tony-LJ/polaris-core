@@ -3,7 +3,7 @@
 from polaris_common import http_client
 from polaris_common import yaml_handler
 from polaris_logger import logger
-from polaris_common import polaris_string_utils, date_time_utils, regex_utils
+from polaris_common import polaris_string_utils, date_time_utils
 
 
 if __name__ == '__main__':
