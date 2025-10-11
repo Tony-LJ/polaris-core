@@ -3,6 +3,7 @@
 from polaris_common import http_client
 from polaris_common import yaml_handler
 from polaris_logger import logger
+from polaris_common import polaris_string_utils, date_time_utils
 
 
 if __name__ == '__main__':
@@ -14,5 +15,10 @@ if __name__ == '__main__':
     config = yaml_handler.yamlUtil.read_yaml("D:\\project\\polaris-core\\docs\\application-prod.yaml")
     print(yaml_handler.yamlUtil.read_yaml("D:\\project\\polaris-core\\docs\\application-prod.yaml"))
     logger.info(yaml_handler.yamlUtil.read_yaml("D:\\project\\polaris-core\\docs\\application-prod.yaml"))
+    print(polaris_string_utils.PolarisStringUtils.to_uppercase("Asdhsdjs"))
+    print(polaris_string_utils.PolarisStringUtils.reverse_string("Asdhsdjs"))
+
+    # 日期工具测试
+    print(date_time_utils.DateTimeUtils.current_datetime())
 
 
