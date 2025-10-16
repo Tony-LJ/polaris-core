@@ -6,7 +6,6 @@ create_date: 2025/9/19 17:11
 file_name: polaris_string_utils.py
 """
 
-
 class PolarisStringUtils:
 
     @staticmethod

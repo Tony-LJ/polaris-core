@@ -47,7 +47,7 @@ def send_weixin(content):
     :return:
     """
     # 这里就是群机器人的Webhook地址
-    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=0ab2779c-220c-425a-8144-5c37b39b5b82"
+    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
     headers = {"Content-Type": "application/json"} # http数据头，类型为json
     data = {
         "msgtype": "text",
@@ -60,12 +60,9 @@ def send_weixin(content):
 
 
 if __name__ == '__main__':
-    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
+    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
     impala_ini = config_read_ini()
-    sql_impala_read("show databases")
-    print(impala_ini)
-    print(sql_impala_read("select * from bi_data.dws_oe_order_ds limit 10"))
-    send_weixin("微信消息测试")
+    # 查询风控规则库
     meta_sql = f''' select id
                           ,check_type
                           ,table_name
@@ -75,14 +72,41 @@ if __name__ == '__main__':
                           ,threshold_max
                           ,create_time
                           ,last_update_time 
-                     from   bi_ods.dask_dw_quality_check_meta   
-                    '''
+                     from bi_ods.dask_dw_quality_check_meta '''
     meta_list = sql_impala_read(meta_sql)
+
+    result_set_lst = []   # 错误检测结果收集列表
+
     for i in range(len(meta_list)):
         subset = meta_list[i]
-        print(subset)
+        # id 表名，检测代码，上下限阈值
+        id,check_type,table_name,check_sql,threshold_min,threshold_max = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6]
+        print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max))
+        meta_cnt = sql_impala_read(check_sql)
+        # 如果检测结果 >0 ,则收集检测结果
+        if meta_cnt[0][0] is None:
+            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+            result_set_lst.append(result_set)
+            send_weixin("表名:{},为空".format(table_name))
+        elif meta_cnt[0][0] < threshold_min:
+            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+            result_set_lst.append(result_set)
+            send_weixin("表名:{}, < 最小阀值".format(table_name))
+        elif meta_cnt[0][0] > threshold_max:
+            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+            result_set_lst.append(result_set)
+            send_weixin("表名:{},> 最大阀值".format(table_name))
+        else:
+            print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
 
+    # 数仓质检评估程序
+    if len(result_set_lst) == 0:
+        print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
+        send_weixin(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
+    else:
+        print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(result_set_lst)}''')
+        send_weixin(f'''【数据质检】任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(result_set_lst)}''')
+        for result_set in result_set_lst:
+            send_weixin(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
-
-
-    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
+    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")

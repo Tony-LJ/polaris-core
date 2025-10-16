@@ -34,5 +34,6 @@ if __name__ == '__main__':
     url = "https://www.example.com/path/to/page"
     pattern = r'https?://(www\.)?([a-zA-Z0-9.-]+)'
     print(regex_utils.RegexUtils.search_pattern(pattern, url))
+    logger.info(regex_utils.RegexUtils.search_pattern(pattern, url))
 
 
