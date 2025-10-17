@@ -61,8 +61,10 @@ if __name__ == '__main__':
                           ,threshold_min
                           ,threshold_max
                           ,create_time
-                          ,last_update_time 
-                     from bi_ods.dask_dw_quality_check_meta '''
+                          ,last_update_time
+                          ,creator
+                          ,importance 
+                     from bi_ods.dw_quality_check_rules '''
     meta_list = sql_impala_read(meta_sql)
 
     quality_error_lst = []   # 错误检测结果收集列表
@@ -71,8 +73,8 @@ if __name__ == '__main__':
     for i in range(len(meta_list)):
         subset = meta_list[i]
         # id 表名，检测代码，上下限阈值
-        id,check_type,table_name,check_sql,threshold_min,threshold_max = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6]
-        # print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max))
+        id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[9]
+        print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{},重要性:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max,importance))
         meta_cnt = sql_impala_read(check_sql)
         # 如果检测结果 >0 ,则收集检测结果
         if meta_cnt[0][0] is None:
