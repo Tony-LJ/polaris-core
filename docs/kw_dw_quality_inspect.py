@@ -44,29 +44,29 @@ def sql_impala_read(sql):
 
     return res_list
 
-def send_weixin(content):
-    """
-    微信消息发送
-    :param content:
-    :return:
-    """
-    # 这里就是群机器人的Webhook地址
-    url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
-    headers = {"Content-Type": "application/json"} # http数据头，类型为json
-    data = {
-        "msgtype": "text",
-        "text": {
-            "content": content,
-            "mentioned_list": [],
-        }
-    }
-    requests.post(url, headers=headers, json=data)
+# def send_weixin(content):
+#     """
+#     微信消息发送
+#     :param content:
+#     :return:
+#     """
+#     # 这里就是群机器人的Webhook地址
+#     url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
+#     headers = {"Content-Type": "application/json"} # http数据头，类型为json
+#     data = {
+#         "msgtype": "text",
+#         "text": {
+#             "content": content,
+#             "mentioned_list": [],
+#         }
+#     }
+#     requests.post(url, headers=headers, json=data)
 
 
 if __name__ == '__main__':
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
     webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
-
+    msg_rebot = WechatBot(webhook_url)
     impala_ini = config_read_ini()
     # 查询风控规则库
     meta_sql = f''' select id
@@ -95,24 +95,24 @@ if __name__ == '__main__':
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
             quality_error_lst.append(result_set)
             print("【=None情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
-            error_list.append("=None情况规则:{}".format(check_sql))
+            error_list.append("=None规则:{}".format(check_sql))
         elif meta_cnt[0][0] < threshold_min:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
             quality_error_lst.append(result_set)
             print("【<最小阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{}".format(i,check_type,table_name,check_sql,threshold_min))
-            error_list.append("<最小阀值情况规则:{}".format(check_sql))
+            error_list.append("<最小阀值规则:{}".format(check_sql))
         elif meta_cnt[0][0] > threshold_max:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
             quality_error_lst.append(result_set)
             print("【>最大阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_max))
-            error_list.append(">最大阀值情况规则:{}".format(check_sql))
+            error_list.append(">最大阀值规则:{}".format(check_sql))
         else:
             print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
 
     # 数仓质检评估规则
     if len(quality_error_lst) == 0:
         print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
-        send_weixin(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
+        # msg_rebot(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
     else:
         print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(quality_error_lst)}''')
         # send_weixin(f'''【数据质检】任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(result_set_lst)}''')
@@ -121,14 +121,13 @@ if __name__ == '__main__':
             # send_weixin(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # 生成每日质检报告
-    msg_rebot = WechatBot(webhook_url)
     now = datetime.now()
-    current_date = now.strftime('%Y-%m-%d')
+    current_date = now.strftime('%Y-%m-%d %H:%M:%S')
     report_content = f'''# **每日数仓质检报告**\n
                          > **质检日期**: <font color='black'>: {current_date} </font> \n
                          > **质检人**: <font color='black'>: 大数据团队 </font> \n
-                         > **异常事件数**: <font color='black'>: {len(quality_error_lst)} </font> \n
-                         > **质检得分**: <font color='black'>: {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
+                         > **异常事件数**: <font color='red'>: {len(quality_error_lst)} </font> \n
+                         > **质检得分**: <font color='green'>: {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
                          > **异常事件列表**: <font color='black'>: {error_list} </font> \n     
     '''
     msg_rebot.send_markdown(content=report_content)
