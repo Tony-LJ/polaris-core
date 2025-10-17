@@ -82,6 +82,7 @@ if __name__ == '__main__':
     meta_list = sql_impala_read(meta_sql)
 
     quality_error_lst = []   # 错误检测结果收集列表
+    error_list = []
 
     for i in range(len(meta_list)):
         subset = meta_list[i]
@@ -94,17 +95,17 @@ if __name__ == '__main__':
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
             quality_error_lst.append(result_set)
             print("【=None情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
-            # send_weixin("表名:{} = NULL".format(table_name))
+            error_list.append("=None情况规则:{}".format(check_sql))
         elif meta_cnt[0][0] < threshold_min:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
             quality_error_lst.append(result_set)
             print("【<最小阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{}".format(i,check_type,table_name,check_sql,threshold_min))
-            # send_weixin("表名:{} < 最小阀值".format(table_name))
+            error_list.append("<最小阀值情况规则:{}".format(check_sql))
         elif meta_cnt[0][0] > threshold_max:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
             quality_error_lst.append(result_set)
             print("【>最大阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_max))
-            # send_weixin("表名:{} > 最大阀值".format(table_name))
+            error_list.append(">最大阀值情况规则:{}".format(check_sql))
         else:
             print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
 
@@ -120,15 +121,18 @@ if __name__ == '__main__':
             # send_weixin(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # 生成每日质检报告
-    rebot = WechatBot(webhook_url)
+    msg_rebot = WechatBot(webhook_url)
     now = datetime.now()
     current_date = now.strftime('%Y-%m-%d')
-    report_content = f'''**每日数仓质检报告**\n
-                         **质检日期**: <font color='black'>: {current_date} </font> \n
-                         **质检人**: <font color='black'>: 大数据团队 </font> \n
-                         **异常事件数**: <font color='black'>: {len(quality_error_lst)} </font> \n
-                         **质检得分**: <font color='black'>: {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
-                         **异常事件列表**: <font color='black'>: {quality_error_lst} </font> \n     
+    report_content = f'''# **每日数仓质检报告**\n
+                         > **质检日期**: <font color='black'>: {current_date} </font> \n
+                         > **质检人**: <font color='black'>: 大数据团队 </font> \n
+                         > **异常事件数**: <font color='black'>: {len(quality_error_lst)} </font> \n
+                         > **质检得分**: <font color='black'>: {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
+                         > **异常事件列表**: <font color='black'>: {error_list} </font> \n     
     '''
-    rebot.send_markdown(content=report_content)
+    msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
+
+
+
