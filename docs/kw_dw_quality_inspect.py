@@ -7,11 +7,13 @@ create_date: 2025/9/27 15:54
 file_name: kw_dw_quality_inspect.py
 """
 
+from datetime import datetime
 import pandas as pd
 import requests
+from fontTools.merge.util import current_time
 from impala.dbapi import connect
 import configparser
-
+import json
 
 def config_read_ini():
     db_host_o="10.53.0.71"
@@ -60,7 +62,8 @@ def send_weixin(content):
 
 
 if __name__ == '__main__':
-    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
+    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
+
     impala_ini = config_read_ini()
     # 查询风控规则库
     meta_sql = f''' select id
@@ -75,38 +78,53 @@ if __name__ == '__main__':
                      from bi_ods.dask_dw_quality_check_meta '''
     meta_list = sql_impala_read(meta_sql)
 
-    result_set_lst = []   # 错误检测结果收集列表
+    quality_error_lst = []   # 错误检测结果收集列表
 
     for i in range(len(meta_list)):
         subset = meta_list[i]
         # id 表名，检测代码，上下限阈值
         id,check_type,table_name,check_sql,threshold_min,threshold_max = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6]
-        print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max))
+        # print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max))
         meta_cnt = sql_impala_read(check_sql)
         # 如果检测结果 >0 ,则收集检测结果
         if meta_cnt[0][0] is None:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            result_set_lst.append(result_set)
-            send_weixin("表名:{},为空".format(table_name))
+            quality_error_lst.append(result_set)
+            print("【=None情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+            # send_weixin("表名:{} = NULL".format(table_name))
         elif meta_cnt[0][0] < threshold_min:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            result_set_lst.append(result_set)
-            send_weixin("表名:{}, < 最小阀值".format(table_name))
+            quality_error_lst.append(result_set)
+            print("【<最小阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{}".format(i,check_type,table_name,check_sql,threshold_min))
+            # send_weixin("表名:{} < 最小阀值".format(table_name))
         elif meta_cnt[0][0] > threshold_max:
             result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            result_set_lst.append(result_set)
-            send_weixin("表名:{},> 最大阀值".format(table_name))
+            quality_error_lst.append(result_set)
+            print("【>最大阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_max))
+            # send_weixin("表名:{} > 最大阀值".format(table_name))
         else:
             print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
 
-    # 数仓质检评估程序
-    if len(result_set_lst) == 0:
+    # 数仓质检评估规则
+    if len(quality_error_lst) == 0:
         print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
         send_weixin(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)}''')
     else:
-        print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(result_set_lst)}''')
-        send_weixin(f'''【数据质检】任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(result_set_lst)}''')
-        for result_set in result_set_lst:
-            send_weixin(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
+        print(f'''质量检测任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(quality_error_lst)}''')
+        # send_weixin(f'''【数据质检】任务完成==>任务数{len(meta_list)}==>得分{len(meta_list)-len(result_set_lst)}''')
+        for result_set in quality_error_lst:
+            print(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
+            # send_weixin(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
-    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
+    # 生成每日质检报告
+    now = datetime.now()
+    current_date = now.strftime('%Y-%m-%d')
+    report_content = f'''每日数仓质检报告\n
+                         质检日期:\t \t{current_date}\n
+                         质检人:\t \t大数据团队 \n
+                         异常事件数:\t \t{len(quality_error_lst)} \n
+                         质检得分:\t \t{round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} \n
+                         异常事件列表:\t \t{quality_error_lst}      
+    '''
+    send_weixin(report_content)
+    print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
