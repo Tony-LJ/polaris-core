@@ -124,11 +124,11 @@ if __name__ == '__main__':
     now = datetime.now()
     current_date = now.strftime('%Y-%m-%d %H:%M:%S')
     report_content = f'''# **每日数仓质检报告**\n
-                         > **质检日期**: <font color='black'>: {current_date} </font> \n
-                         > **质检人**: <font color='black'>: 大数据团队 </font> \n
-                         > **异常事件数**: <font color='red'>: {len(quality_error_lst)} </font> \n
-                         > **质检得分**: <font color='green'>: {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
-                         > **异常事件列表**: <font color='black'>: {error_list} </font> \n     
+                         > **质检日期**: <font color='black'> {current_date} </font> \n
+                         > **质检人**: <font color='black'> 大数据团队 </font> \n
+                         > **异常事件数**: <font color='red'> {len(quality_error_lst)} </font> \n
+                         > **质检得分**: <font color='green'> {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
+                         > **异常事件列表**: <font color='black'> {error_list} </font> \n     
     '''
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
