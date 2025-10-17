@@ -7,6 +7,7 @@ create_date: 2025/9/27 15:54
 file_name: kw_dw_quality_inspect.py
 """
 
+from polaris_message.massage_push_bot import WechatBot
 from datetime import datetime
 import pandas as pd
 import requests
@@ -14,6 +15,7 @@ from fontTools.merge.util import current_time
 from impala.dbapi import connect
 import configparser
 import json
+
 
 def config_read_ini():
     db_host_o="10.53.0.71"
@@ -63,6 +65,7 @@ def send_weixin(content):
 
 if __name__ == '__main__':
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
+    webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
 
     impala_ini = config_read_ini()
     # 查询风控规则库
@@ -117,14 +120,15 @@ if __name__ == '__main__':
             # send_weixin(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # 生成每日质检报告
+    rebot = WechatBot(webhook_url)
     now = datetime.now()
     current_date = now.strftime('%Y-%m-%d')
-    report_content = f'''每日数仓质检报告\n
-                         质检日期:\t \t{current_date}\n
-                         质检人:\t \t大数据团队 \n
-                         异常事件数:\t \t{len(quality_error_lst)} \n
-                         质检得分:\t \t{round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} \n
-                         异常事件列表:\t \t{quality_error_lst}      
+    report_content = f'''**每日数仓质检报告**\n
+                         **质检日期**: <font color='black'>: {current_date} </font> \n
+                         **质检人**: <font color='black'>: 大数据团队 </font> \n
+                         **异常事件数**: <font color='black'>: {len(quality_error_lst)} </font> \n
+                         **质检得分**: <font color='black'>: {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
+                         **异常事件列表**: <font color='black'>: {quality_error_lst} </font> \n     
     '''
-    send_weixin(report_content)
+    rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
