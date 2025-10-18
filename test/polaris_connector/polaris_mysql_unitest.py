@@ -12,7 +12,7 @@ pool = MysqlClient(
 )
 
 if __name__ == '__main__':
-    table_output = f"ODS_FND_FLEX_VALUE_SETS"
+    table_output = f"ODS_CUX_INV_MIC"
     data = pool.get("SELECT * FROM dask_ods_meta WHERE table_output=%s", (table_output,))
     print(data)
 

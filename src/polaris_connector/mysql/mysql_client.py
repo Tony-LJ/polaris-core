@@ -57,9 +57,19 @@ class MysqlClient:
         )
 
     def _get_conn(self):
+        """
+        获取conn连接
+        :return:
+        """
         return self._pool.connection()
 
     def query(self, sql, params=None):
+        """
+        sql查询
+        :param sql:
+        :param params:
+        :return:
+        """
         conn = self._get_conn()
         cursor = conn.cursor()
         try:
@@ -79,7 +89,15 @@ class MysqlClient:
             cursor.close()
             conn.close()
 
-    def execute(self, sql, params=None):
+    def execute(self,
+                sql,
+                params=None):
+        """
+        带参执行sql查询
+        :param sql:
+        :param params:
+        :return:
+        """
         conn = self._get_conn()
         cursor = conn.cursor()
         try:
@@ -92,7 +110,15 @@ class MysqlClient:
             cursor.close()
             conn.close()
 
-    def insert(self, sql, params=None):
+    def insert(self,
+               sql,
+               params=None):
+        """
+        带参数插入
+        :param sql:
+        :param params:
+        :return:
+        """
         conn = self._get_conn()
         cursor = conn.cursor()
         try:
@@ -105,11 +131,29 @@ class MysqlClient:
             cursor.close()
             conn.close()
 
-    def table_has(self, table_name, field, value):
+    def table_has(self,
+                  table_name,
+                  field,
+                  value):
+        """
+        是否存在某值
+        :param table_name:
+        :param field:
+        :param value:
+        :return:
+        """
         sql = f"SELECT {field} FROM {table_name} WHERE {field}=%s LIMIT 1"
         return self.get(sql, value)
 
-    def table_insert(self, table_name, item: dict):
+    def table_insert(self,
+                     table_name,
+                     item: dict):
+        """
+         表数据插入
+        :param table_name:
+        :param item:
+        :return:
+        """
         fields = list(item.keys())
         values = list(item.values())
         placeholders = ','.join(['%s'] * len(fields))
@@ -124,7 +168,18 @@ class MysqlClient:
                 logging.error("插入数据出错: %s\n数据: %s", e, item)
                 raise
 
-    def table_update(self, table_name, updates: dict, field_where: str, value_where):
+    def table_update(self,
+                     table_name,
+                     updates: dict,
+                     field_where: str, value_where):
+        """
+        表更新
+        :param table_name:
+        :param updates:
+        :param field_where:
+        :param value_where:
+        :return:
+        """
         set_clause = ', '.join([f"{k}=%s" for k in updates])
         values = list(updates.values()) + [value_where]
         sql = f"UPDATE {table_name} SET {set_clause} WHERE {field_where}=%s"
