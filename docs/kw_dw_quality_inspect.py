@@ -47,6 +47,7 @@ if __name__ == '__main__':
     now = datetime.now()
     current_date = now.strftime('%Y-%m-%d %H:%M:%S')
     impala_ini = config_read_ini()
+
     # ############# 查询风控规则库
     meta_sql = f''' select id
                           ,check_type
