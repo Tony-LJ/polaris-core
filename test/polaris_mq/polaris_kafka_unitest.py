@@ -31,11 +31,11 @@ def async_send_test(bootstrap_servers,
     }
     if json_format:
         p = PolarisKafkaProducer(bootstrap_servers=bootstrap_servers)
-        p.asyn_send(value,topic)
+        p.async_send(value,topic)
     else:
         p = PolarisKafkaProducer(bootstrap_servers=bootstrap_servers,key_serializer=None,value_serializer=None)
         v = bytes('{}'.format(json.dumps(value)), 'utf-8')
-        p.asyn_send(v,topic)
+        p.async_send(v,topic)
     p.close()
 
 def consumer_test(bootstrap_servers,
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     # 测试生产
     # sync_send_test(bootstrap_servers=bootstrap_servers,topic=topic)
     # async_send_test(bootstrap_servers=bootstrap_servers,topic=topic)
-    sync_send_test(bootstrap_servers=bootstrap_servers,topic=topic,json_format=False)
+    # sync_send_test(bootstrap_servers=bootstrap_servers,topic=topic,json_format=False)
     async_send_test(bootstrap_servers=bootstrap_servers,topic=topic,json_format=False)
     # 测试消费
     consumer_test(bootstrap_servers=bootstrap_servers,topic=topic)
