@@ -15,7 +15,9 @@ class PolarisKafkaProducer:
     """
     descr: kafka producer
     """
-    def __init__(self, bootstrap_servers: List, key_serializer=lambda m: json.dumps(m).encode("ascii"),
+    def __init__(self,
+                 bootstrap_servers: List,
+                 key_serializer=lambda m: json.dumps(m).encode("ascii"),
                  value_serializer=lambda m: json.dumps(m).encode("ascii"), compression_type=None):
         try:
             self.producer = KafkaProducer(
