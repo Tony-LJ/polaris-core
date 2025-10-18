@@ -106,14 +106,14 @@ if __name__ == '__main__':
             print(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # ############# 生成每日质检报告
-    report_content = f'''# **每日数仓质检报告**\n
-                         > **质检日期**: <font color='black'> {current_date} </font> \n
-                         > **质检人**: <font color='black'> 大数据团队 </font> \n
-                         > **质检规则库**: <font color='black'> bi_ods.dw_quality_check_rules </font> \n
-                         > **质检异常数**: <font color='red'> {len(quality_error_lst)} </font> \n
-                         > **质检得分**: <font color='green'> {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> \n
-                         > **质检重要异常列表**: <font color='black'> {important_error_list} </font> \n   
-                         > **质检全部异常列表**: <font color='black'> {error_list} </font> \n     
+    report_content = f'''# **每日数仓质检报告**
+                         > **质检日期**: <font color='black'> {current_date} </font> 
+                         > **质检人**: <font color='black'> 大数据团队 </font>
+                         > **质检规则库**: <font color='black'> bi_ods.dw_quality_check_rules </font>
+                         > **质检异常数**: <font color='red'> {len(quality_error_lst)} </font> 
+                         > **质检得分**: <font color='green'> {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font> 
+                         > **质检重要异常列表**: <font color='black'> {important_error_list} </font> 
+                         > **质检全部异常列表**: <font color='black'> {error_list} </font> 
     '''
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
