@@ -1,6 +1,6 @@
 [project]
 name = "polaris-core"
-version = "1.1.9"
+version = "1.1.10"
 description = "北极星python项目开发通用核心工具包"
 
 authors = [
@@ -32,6 +32,7 @@ packages = [
 ##    {include = "polaris_api", from = "src"},
     {include = "polaris_common", from = "src"},
     {include = "polaris_connector", from = "src"},
+#    {include = "polaris_mqtt", from = "src"},
 #    {include = "polaris_crypto", from = "src"},
 #    {include = "polaris_enums", from = "src"},
 #    {include = "polaris_exception", from = "src"},

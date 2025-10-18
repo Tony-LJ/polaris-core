@@ -14,7 +14,9 @@ pool = MysqlClient(
 
 if __name__ == '__main__':
     table_output = f"ODS_CUX_INV_MIC"
-    data = pool.query("SELECT * FROM dask_ods_meta")
+    data = pool.get("SELECT * FROM dask_ods_meta WHERE table_output=%s", (table_output,))
+    data2 = pool.query("SELECT * FROM dask_ods_meta")
     print(data)
+    print(data2)
 
 
