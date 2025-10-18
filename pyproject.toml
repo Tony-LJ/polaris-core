@@ -30,7 +30,7 @@ packages = [
 #    {include = "polaris_core", from = "src"},
 ##    {include = "polaris_ai", from = "src"},
 ##    {include = "polaris_api", from = "src"},
-#    {include = "polaris_common", from = "src"},
+    {include = "polaris_common", from = "src"},
     {include = "polaris_connector", from = "src"},
 #    {include = "polaris_crypto", from = "src"},
 #    {include = "polaris_enums", from = "src"},

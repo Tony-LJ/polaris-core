@@ -11,9 +11,10 @@ pool = MysqlClient(
     port=3306
 )
 
+
 if __name__ == '__main__':
     table_output = f"ODS_CUX_INV_MIC"
-    data = pool.get("SELECT * FROM dask_ods_meta WHERE table_output=%s", (table_output,))
+    data = pool.query("SELECT * FROM dask_ods_meta")
     print(data)
 
 

@@ -80,6 +80,12 @@ class MysqlClient:
             conn.close()
 
     def get(self, sql, params=None):
+        """
+        带参取值
+        :param sql:
+        :param params:
+        :return:
+        """
         conn = self._get_conn()
         cursor = conn.cursor()
         try:
@@ -88,6 +94,24 @@ class MysqlClient:
         finally:
             cursor.close()
             conn.close()
+
+    def get_many(self, sql, num, param=None):
+        """
+        @summary: 执行查询，并取出num条结果
+        @param sql:查询ＳＱＬ，如果有查询条件，请只指定条件列表，并将条件值使用参数[param]传递进来
+        @param num:取得的结果条数
+        @param param: 可选参数，条件列表值（元组/列表）
+        @return: result list/boolean 查询到的结果集
+        """
+        if param is None:
+            count = self._cursor.execute(sql)
+        else:
+            count = self._cursor.execute(sql, param)
+        if count > 0:
+            result = self._cursor.fetchmany(num)
+        else:
+            result = False
+        return result
 
     def execute(self,
                 sql,
@@ -184,6 +208,43 @@ class MysqlClient:
         values = list(updates.values()) + [value_where]
         sql = f"UPDATE {table_name} SET {set_clause} WHERE {field_where}=%s"
         self.execute(sql, values)
+
+    def delete(self, sql, param=None):
+        """
+        @summary: 删除数据表记录
+        @param sql: ＳＱＬ格式及条件，使用(%s,%s)
+        @param param: 要删除的条件 值 tuple/list
+        @return: count 受影响的行数
+        """
+        return self.__query(sql, param)
+
+    def begin(self):
+        """
+        @summary: 开启事务
+        """
+        self._conn.autocommit(0)
+
+    def end(self, option='commit'):
+        """
+        @summary: 结束事务
+        """
+        if option == 'commit':
+            self._conn.commit()
+        else:
+            self._conn.rollback()
+
+    def dispose(self, isEnd=1):
+        """
+        @summary: 释放连接池资源
+        """
+        if isEnd == 1:
+            self.end('commit')
+        else:
+            self.end('rollback')
+        self._cursor.close()
+        self._conn.close()
+
+
 
 
 
