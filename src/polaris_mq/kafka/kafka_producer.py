@@ -11,7 +11,7 @@ from kafka import KafkaConsumer, KafkaProducer, TopicPartition
 from typing import List
 
 
-class KafkaProducer:
+class PolarisKafkaProducer:
     """
     descr: kafka producer
     """
