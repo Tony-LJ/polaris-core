@@ -4,7 +4,7 @@
 descr: 查询impala所有字段信息
 auther: lj.michale
 create_date: 2025/9/27 15:54
-file_name: impala_chema_execute.py
+file_name: impala_schema_execute.py
 """
 
 from datetime import datetime
@@ -90,6 +90,8 @@ if __name__ == '__main__':
     df = pd.DataFrame(arrays)
     df.columns = ['database', 'table', 'column_name', 'filed_type', 'comment']
     df.to_csv('impala_schema.csv', index=False)
+
+    # 写入mysql
 
 
 
