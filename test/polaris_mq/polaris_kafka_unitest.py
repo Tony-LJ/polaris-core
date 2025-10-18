@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from polaris_mq import kafka_producer
-from polaris_mq import kafka_consumer
 import json
 
 from polaris_mq.kafka import PolarisKafkaProducer, PolarisKafkaConsumer
@@ -57,11 +55,11 @@ def get_one_msg(bootstrap_servers,
 
 if __name__ == '__main__':
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    bootstrap_servers = ["10.53.0.71:9092"]
-    topic = "demodata"
+    bootstrap_servers = ['10.53.0.73:9092','10.53.0.74:9092','10.53.0.75:9092']
+    topic = "kw-sync"
     # 测试生产
-    sync_send_test(bootstrap_servers=bootstrap_servers,topic=topic)
-    async_send_test(bootstrap_servers=bootstrap_servers,topic=topic)
+    # sync_send_test(bootstrap_servers=bootstrap_servers,topic=topic)
+    # async_send_test(bootstrap_servers=bootstrap_servers,topic=topic)
     sync_send_test(bootstrap_servers=bootstrap_servers,topic=topic,json_format=False)
     async_send_test(bootstrap_servers=bootstrap_servers,topic=topic,json_format=False)
     # 测试消费

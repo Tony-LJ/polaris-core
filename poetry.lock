@@ -336,16 +336,23 @@ thrift-sasl = "0.4.3"
 kerberos = ["kerberos (>=1.3.0)"]
 
 [[package]]
-name = "kafka"
-version = "1.3.5"
+name = "kafka-python-ng"
+version = "2.2.3"
 description = "Pure Python client for Apache Kafka"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "kafka-1.3.5-py2.py3-none-any.whl", hash = "sha256:35a49e9a432f6792aad48b2ab09d03867357aaa06eacba2678b7fd0808156e5c"},
-    {file = "kafka-1.3.5.tar.gz", hash = "sha256:ffb3348cd918c31344b1a2eb61f692cbc423c83b1b06466a86de3db8a3f6a018"},
+    {file = "kafka_python_ng-2.2.3-py2.py3-none-any.whl", hash = "sha256:adc6e82147c441ca4ae1f22e291fc08efab0d10971cbd4aa1481d2ffa38e9480"},
+    {file = "kafka_python_ng-2.2.3.tar.gz", hash = "sha256:f79f28e10ade9b5a9860b2ec15b7cc8dc510d5702f5a399430478cff5f93a05a"},
 ]
+
+[package.extras]
+boto = ["botocore"]
+crc32c = ["crc32c"]
+lz4 = ["lz4"]
+snappy = ["python-snappy"]
+zstd = ["zstandard"]
 
 [[package]]
 name = "numpy"
@@ -989,4 +996,4 @@ full = ["orjson"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "40f24c3b53960aaa1142c6d0e6c92b0722e8e349342b819e117538fd48b48bac"
+content-hash = "2c9858a5d807d14f868064a4569fc5e30d3e8ca6fafa46fde6db78ceac73d292"
