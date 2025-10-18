@@ -79,15 +79,23 @@ class PolarisKafkaProducer:
 
     @staticmethod
     def __send_success():
-        """异步发送成功回调函数"""
+        """
+        异步发送成功回调函数
+        :return:
+        """
         print("save success")
         return
 
     @staticmethod
     def __send_error():
-        """异步发送错误回调函数"""
+        """
+        异步发送错误回调函数
+        :return:
+        """
         print("save error")
         return
 
     def close(self):
         self.producer.close()
+
+
