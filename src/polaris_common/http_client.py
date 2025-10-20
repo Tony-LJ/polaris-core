@@ -10,15 +10,7 @@ file_name : http_client.py
 import requests
 from datetime import timedelta
 from enum import Enum
-
-class HttpMethod(Enum):
-    GET = "GET"
-    POST = "POST"
-    PATCH = "PATCH"
-    PUT = "PUT"
-    DELETE = "DELETE"
-    HEAD = "HEAD"
-    OPTIONS = "OPTIONS"
+from polaris_enums import HttpMethodEnums as HttpMethod
 
 class HttpClient:
     """
