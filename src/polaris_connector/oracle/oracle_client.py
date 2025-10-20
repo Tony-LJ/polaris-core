@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-descr: 基于impyla,dbutils封装impala客户端
+descr: 基于impyla,dbutils封装Oracle客户端
 auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: impala_client.py
@@ -13,7 +13,7 @@ import logging
 import traceback
 
 
-class ImpalaClient:
+class OracleClient:
     def __init__(self,
                  host,
                  database,
@@ -112,14 +112,14 @@ class ImpalaClient:
             conn.close()
 
 
-# if __name__ == '__main__':
-#     pool = ImpalaClient(
-#         host='10.53.0.71',
-#         database='impala',
-#         user='root',
-#         password='',
-#         port=21050
-#     )
-#     data_list = pool.query("select * from bi_ods.dw_quality_check_rules ")
-#     for data in data_list:
-#         print(data)
+if __name__ == '__main__':
+    pool = OracleClient(
+        host='10.53.0.71',
+        database='impala',
+        user='root',
+        password='',
+        port=21050
+    )
+    data_list = pool.query("select * from bi_ods.dw_quality_check_rules ")
+    for data in data_list:
+        print(data)
