@@ -15,7 +15,14 @@ class MQTTSubscriber:
     MQTT订阅消息的类
     """
     def __init__(self, host, port=1883, client_id="", username=None, password=None):
-        """初始化 MQTT 客户端的连接信息"""
+        """
+        初始化 MQTT 客户端的连接信息
+        :param host:
+        :param port:
+        :param client_id:
+        :param username:
+        :param password:
+        """
         # MQTT 服务器的地址
         self.host = host
         # MQTT 服务器的端口号，默认为 1883
