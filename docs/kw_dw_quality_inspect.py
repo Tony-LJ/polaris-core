@@ -97,7 +97,7 @@ if __name__ == '__main__':
             elif check_type == "完整性":
                 wanzhengxing_results.append(table_name)
             elif check_type == "主键唯一":
-                zhunquexing_results.append(table_name)
+                zhujianweiyi_results.append(table_name)
             elif check_type == "一致性":
                 yizhixing_results.append(table_name)
             if importance == "p0":
@@ -113,7 +113,7 @@ if __name__ == '__main__':
             elif check_type == "完整性":
                 wanzhengxing_results.append(table_name)
             elif check_type == "主键唯一":
-                zhunquexing_results.append(table_name)
+                zhujianweiyi_results.append(table_name)
             elif check_type == "一致性":
                 yizhixing_results.append(table_name)
             if importance == "p0":
@@ -129,7 +129,7 @@ if __name__ == '__main__':
             elif check_type == "完整性":
                 wanzhengxing_results.append(table_name)
             elif check_type == "主键唯一":
-                zhunquexing_results.append(table_name)
+                zhujianweiyi_results.append(table_name)
             elif check_type == "一致性":
                 yizhixing_results.append(table_name)
             if importance == "p0":
@@ -146,16 +146,6 @@ if __name__ == '__main__':
             print(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # ############# 生成每日质检报告
-    # report_content = f'''# **每日数仓质检报告**
-    #                      > **质检日期**: <font color='black'> {current_date} </font>
-    #                      > **质检人**: <font color='black'> 大数据团队 </font>
-    #                      > **质检规则库**: <font color='black'> bi_ods.dw_quality_check_rules </font>
-    #                      > **质检规则数**: <font color='black'> {len(meta_list)} </font>
-    #                      > **质检异常数**: <font color='red'> {len(quality_error_lst)} </font>
-    #                      > **质检得分**: <font color='green'> {round(((len(meta_list)-len(quality_error_lst))/len(meta_list)) * 100, 2)} </font>
-    #                      > **质检重要异常列表**: <font color='black'> {important_error_list} </font>
-    #                      > **质检全部异常列表**: <font color='black'> 完整性异常:{wanzhengxing_results},\n 一致性异常:{yizhixing_results},\n 主键唯一异常:{zhujianweiyi_results},\n 准确性异常:{zhunquexing_results} </font>
-    # '''
     report_content = send_dw_quality_markdown_msg(current_date,meta_list,quality_error_lst,important_error_list,wanzhengxing_results,yizhixing_results,zhujianweiyi_results, zhunquexing_results)
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
