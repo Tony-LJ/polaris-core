@@ -76,11 +76,9 @@ class MQTTPublisher:
     def publish(self, topic, message, qos=0):
         """
         发布 MQTT 消息到指定主题
-
         :param topic: MQTT 消息主题
         :param message: MQTT 消息内容，需要将其转换成JSON字符串
         :param qos: MQTT 消息质量等级，默认为0
-
         - qos说明：
             * 0：最多一次，不保证消息能够被接收到
             * 1：至少一次，确保消息至少被接收到一次，可能会重复发送

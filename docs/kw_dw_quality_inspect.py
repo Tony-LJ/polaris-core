@@ -6,41 +6,22 @@ auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: kw_dw_quality_inspect.py
 """
-
+import polaris_connector.mysql
 from polaris_message.massage_push_bot import WechatBot
+from polaris_connector.mysql import MysqlClient
 from datetime import datetime
 from impala.dbapi import connect
-
-def config_read_ini():
-    db_host_o="10.53.0.71"
-    db_port_o=21050
-    db_user_o="root"
-    db_pass_o=""
-    db_base_o="impala"
-    db_ini = [db_host_o,db_port_o,db_user_o,db_pass_o,db_base_o]
-
-    return db_ini
-
-def sql_impala_read(sql):
-    """
-    读取bi_data 任务配置文件
-    :param sql:
-    :return:
-    """
-    cursor = connect(host=impala_ini[0],
-                     port=impala_ini[1],
-                     user=impala_ini[2],
-                     password=impala_ini[3],
-                     database=impala_ini[4]).cursor()
-    cursor.execute(sql)
-    res_list = cursor.fetchall()
-    cursor.close()
-
-    return res_list
 
 
 if __name__ == '__main__':
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
+    pool = MysqlClient(
+        host='10.53.0.71',
+        database='bigdata',
+        user='root',
+        password='LJkwhadoop2025!',
+        port=3306
+    )
     # webhook_url = "https://work.weixin.qq.com/wework_admin/common/openBotProfile/24ecfe4b4e965b4fa53c23bf699d09c849"
     webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
     msg_rebot = WechatBot(webhook_url)
@@ -60,8 +41,9 @@ if __name__ == '__main__':
                           ,last_update_time
                           ,creator
                           ,importance 
-                     from bi_ods.dw_quality_check_rules '''
-    meta_list = sql_impala_read(meta_sql)
+                     from bigdata.dw_quality_check_rules '''
+    # meta_list = sql_impala_read(meta_sql)
+    meta_list = pool.query(meta_sql)
 
     quality_error_lst = []   # 错误检测结果收集列表
     error_list = []
@@ -70,7 +52,7 @@ if __name__ == '__main__':
     for i in range(len(meta_list)):
         subset = meta_list[i]
         # id 表名，检测代码，上下限阈值
-        id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[9]
+        id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset['id'],subset['check_type'],subset['table_name'],subset['check_sql'],subset['threshold_min'],subset['threshold_max'],subset['importance']
         print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{},重要性:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max,importance))
         meta_cnt = sql_impala_read(check_sql)
         # 如果检测结果 >0 ,则收集检测结果
