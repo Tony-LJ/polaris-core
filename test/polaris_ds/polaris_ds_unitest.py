@@ -7,6 +7,9 @@ from polaris_ds.tree.binary_tree import BinaryTree
 from polaris_ds.tree.node import Node
 
 
+class WeightDAG:
+    pass
+
 
 if __name__ == "__main__":
     q = BaseQueue()
@@ -99,3 +102,10 @@ if __name__ == "__main__":
     # 检查是否为无环图（应为False）并打印结果（实际操作中应避免添加导致循环的边）
     print("Is DAG acyclic?", dag.is_acyclic())  # 应该返回False，因为我们尝试添加了一个导致循环的边。
     print("Topological Sort:", dag.topological_sort())  # 这将抛出异常，因为图中有环。
+
+    dag2 = WeightDAG()
+    dag2.add_node('A', 1, 2)
+    dag2.add_node('B', 3, 4)
+    dag2.add_edge('A', 'B', 5)  # 从A到B的权重为5
+    print(dag2.get_edge_weight('A', 'B'))  # 输出边的权重
+    print(dag2.shortest_path('A', 'B'))  # 输出从A到B的最短路径（如果有的话）
