@@ -50,9 +50,10 @@ def generate_order_dataset_func(data_sizes, ration):
         # 生成用户邮箱
         email = fake.email()
         # 生成商品名称
-        product_name = fake.word()
-        producct_categories = ['A', 'B', 'C', 'D', 'E']   # 方法一：手动定义
-        category = random.choice(producct_categories)
+        product_name_array = ['product_A', 'product_B', 'product_C', 'product_D', 'product_E']   # 方法一：手动定义
+        product_name = random.choice(product_name_array)
+        category_array = ['kind_a', 'kind_b', 'kind_c', 'kind_d', 'kind_e']   # 方法一：手动定义
+        product_category = random.choice(category_array)
         # 生成购买数量
         quantity = random.randint(1,10)
         # 生成单价。使用uniform生成50~200之间的随机浮动数，并使用round保留两位小数
@@ -67,7 +68,7 @@ def generate_order_dataset_func(data_sizes, ration):
             'name': name,
             'email': email,
             'product_name': product_name,
-            'category': category,
+            'category': product_category,
             'quantity': quantity,
             'unit_price': unit_price,
             'total_price': total_price,
@@ -76,10 +77,10 @@ def generate_order_dataset_func(data_sizes, ration):
 
     return pd.DataFrame(datas)  # 将数据转化为DataFrame形式，作为返回值
 
-# if __name__ == '__main__':
-    data_size = 1000   # 确定要造的数据数量
+if __name__ == '__main__':
+    data_size = 100   # 确定要造的数据数量
     ration = 0.3   # 确定重复比例
     df = generate_order_dataset_func(data_size, ration)
-    print(df)
+    print(df.to_string())
     # 查找 'id' 列中重复的行
     print(df[df.duplicated(subset='id')])
