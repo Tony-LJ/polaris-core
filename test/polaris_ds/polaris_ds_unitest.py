@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-
+from polaris_ds.dag import BaseDAG
 from polaris_ds.queue.base_queue import BaseQueue
 from polaris_ds.queue.bounded_queue import BoundedQueue
 from polaris_ds.stack.base_stack import BaseStack
 from polaris_ds.tree.binary_tree import BinaryTree
 from polaris_ds.tree.node import Node
 
-# 测试队列功能
+
+
 if __name__ == "__main__":
     q = BaseQueue()
-
     # 测试入队
     q.enqueue("任务1")
     q.enqueue("任务2")
@@ -83,3 +83,19 @@ if __name__ == "__main__":
     print('中序遍历')
     bt.last_travel(node1)
     print('后序遍历')
+
+    # ############################### DAG
+    # 创建 DAG 实例
+    dag = BaseDAG()
+
+    # 添加节点和边
+    dag.add_node('A')
+    dag.add_node('B')
+    dag.add_node('C')
+    dag.add_edge('A', 'B')
+    dag.add_edge('B', 'C')
+    dag.add_edge('A', 'C')  # 这条边会导致图不是无环的，实际操作中应避免添加这样的边。
+
+    # 检查是否为无环图（应为False）并打印结果（实际操作中应避免添加导致循环的边）
+    print("Is DAG acyclic?", dag.is_acyclic())  # 应该返回False，因为我们尝试添加了一个导致循环的边。
+    print("Topological Sort:", dag.topological_sort())  # 这将抛出异常，因为图中有环。
