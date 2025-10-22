@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
-from polaris_ds.dag import BaseDAG
+from polaris_ds.dag import BaseDAG, WeightedDAG
 from polaris_ds.queue.base_queue import BaseQueue
 from polaris_ds.queue.bounded_queue import BoundedQueue
 from polaris_ds.stack.base_stack import BaseStack
 from polaris_ds.tree.binary_tree import BinaryTree
 from polaris_ds.tree.node import Node
-
-
-class WeightDAG:
-    pass
 
 
 if __name__ == "__main__":
@@ -103,7 +99,8 @@ if __name__ == "__main__":
     print("Is DAG acyclic?", dag.is_acyclic())  # 应该返回False，因为我们尝试添加了一个导致循环的边。
     print("Topological Sort:", dag.topological_sort())  # 这将抛出异常，因为图中有环。
 
-    dag2 = WeightDAG()
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    dag2 = WeightedDAG()
     dag2.add_node('A', 1, 2)
     dag2.add_node('B', 3, 4)
     dag2.add_edge('A', 'B', 5)  # 从A到B的权重为5
