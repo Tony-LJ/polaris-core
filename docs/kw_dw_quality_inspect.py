@@ -50,9 +50,10 @@ def match_check_type(pattern, s):
     return re.search(pattern, s)
 
 if __name__ == '__main__':
+
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
     # webhook_url = "https://work.weixin.qq.com/wework_admin/common/openBotProfile/24ecfe4b4e965b4fa53c23bf699d09c849"
-    webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
+    webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f318a3b2-383b-451c-bef3-e637c8df4b07"
     msg_rebot = WechatBot(webhook_url)
     now = datetime.now()
     current_date = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -69,7 +70,7 @@ if __name__ == '__main__':
                           ,last_update_time
                           ,creator
                           ,importance 
-                     from bi_ods.dw_quality_check_rules '''
+                     from bi_ods.dw_quality_check_rules_v1 '''
     meta_list = sql_impala_read(meta_sql)
 
     quality_error_lst = []   # 错误检测结果收集列表
@@ -83,7 +84,7 @@ if __name__ == '__main__':
     for i in range(len(meta_list)):
         subset = meta_list[i]
         # id 表名，检测代码，上下限阈值
-        id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[9]
+        id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[10]
         print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{},重要性:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max,importance))
         meta_cnt = sql_impala_read(check_sql)
         # 如果检测结果 >0 ,则收集检测结果
@@ -150,7 +151,9 @@ if __name__ == '__main__':
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
 
-    # TODO:质检异常简易修复
+    # TODO:
+    #  1.巡检报告中新增巡检人员栏目
+    #  2.质检异常简易修复(还未提)
 
 
 
