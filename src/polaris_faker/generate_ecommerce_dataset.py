@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-descr: 生成电商数据
+descr: 生成电商模拟数据
 auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: generate_ecommerce_data.py
@@ -15,20 +15,16 @@ import random
 fake = Faker("zh_CN")
 
 
-def _generate_ids(data_sizes, ration):
-    """
+def generate_ids(data_sizes, ration):
+    """ pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade --ignore-install pyspark
     定义生成可重复ID的函数，其中参数ration为重复的ID占比，比如0.3
     :param data_sizes:
     :param ration:
     :return:
     """
-    # 计算重复的id数
     num_dupl = int(data_sizes*ration)
-    # 先生成一部分不重复的id
     ids = [str(fake.uuid4()) for _ in range(data_sizes - num_dupl)]
-    # 随机抽取一部分id来重复
     ids.extend(random.sample(ids, num_dupl))
-    # 打乱顺序
     random.shuffle(ids)
 
     return ids
@@ -42,7 +38,7 @@ def generate_order_dataset_func(data_sizes, ration):
     :return:
     """
     datas = []
-    ids = _generate_ids(data_sizes, ration)
+    ids = generate_ids(data_sizes, ration)
 
     for id in ids:
         # 生成用户名字
@@ -50,9 +46,9 @@ def generate_order_dataset_func(data_sizes, ration):
         # 生成用户邮箱
         email = fake.email()
         # 生成商品名称
-        product_name_array = ['product_A', 'product_B', 'product_C', 'product_D', 'product_E']   # 方法一：手动定义
+        product_name_array = ['product_a', 'product_b', 'product_c', 'product_d', 'product_e']
         product_name = random.choice(product_name_array)
-        category_array = ['kind_a', 'kind_b', 'kind_c', 'kind_d', 'kind_e']   # 方法一：手动定义
+        category_array = ['kind_a', 'kind_b', 'kind_c', 'kind_d', 'kind_e']
         product_category = random.choice(category_array)
         # 生成购买数量
         quantity = random.randint(1,10)
@@ -61,7 +57,7 @@ def generate_order_dataset_func(data_sizes, ration):
         # 生成同消费金额
         total_price = round(quantity*unit_price, 2)
         # 随机生成2024上半年这个时间段的购买日期
-        sale_date = fake.date_between(start_date=date(2024,1,1), end_date=date(2024,6,30))
+        sale_date = fake.date_between(start_date=date(2024,1,1), end_date=date(2025,10,30))
 
         datas.append({
             'id': id,
