@@ -7,8 +7,8 @@ create_date: 2025/10/27 15:54
 file_name: bounded_queue.py
 """
 
-from collections import deque
-from base_queue import BaseQueue
+from polaris_ds.queue import BaseQueue
+
 
 class BoundedQueue(BaseQueue):
     def __init__(self, max_size):
