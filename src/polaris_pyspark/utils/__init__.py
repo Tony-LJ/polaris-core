@@ -19,8 +19,9 @@ from pyspark.sql.functions import expr
 from pyspark.sql.readwriter import DataFrameWriter
 from pyspark.sql.types import StringType
 
-from ..templates import (get_decrypt_table_name, get_hour_to_day_et_sql,
-                                 get_insert_partition_table_sql, get_decrypt_data_table_insertion_sql)
+from ..templates import (get_decrypt_table_name,
+                         get_hour_to_day_et_sql,
+                         get_insert_partition_table_sql, get_decrypt_data_table_insertion_sql)
 
 
 # for ETL spark createOrReplaceTempView
@@ -29,8 +30,13 @@ corrupt_data_tmp_view_name = "corrupt_raw_data__"
 output_tmp_view_name = "hour_data__"
 output_tmp_md5_view_name = "hour_data_md5__"
 
-
 def init_spark(app_name, yarn_queue):
+    """
+    初始化spark环境
+    :param app_name:
+    :param yarn_queue:
+    :return:
+    """
     current_path = os.path.abspath(__file__)
     father_path = os.path.abspath(os.path.join(os.path.dirname(current_path), ".."))
     base_path = father_path + '/jars/'
@@ -63,7 +69,8 @@ def init_spark(app_name, yarn_queue):
 
 @contextmanager
 def cache(rdd_or_df):
-    """ context中保证rdd_or_df是cached, 出了context恢复rdd_or_df的cache状态
+    """
+    context中保证rdd_or_df是cached, 出了context恢复rdd_or_df的cache状态
     :param rdd_or_df: spark rdd or DataFrame
     :return: spark rdd or DataFrame
     """
@@ -72,7 +79,6 @@ def cache(rdd_or_df):
     yield rdd_or_df
     if not is_cached:
         rdd_or_df.unpersist()
-
 
 def dfs_ls(path, spark=None, sort_by_mtime=True):
     """

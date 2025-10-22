@@ -11,8 +11,7 @@ from .templates import (get_corrupt_record_table_creation_sql,
                         get_decrypt_table_name,
                         corrupt_record_col_name,
                         get_corrupt_table_name)
-from utils import (send_alert,
-                   hour_to_day_etl,
+from utils import (hour_to_day_etl,
                    get_partition,
                    dfs_ls,
                    add_corrupt_record_col_if_not_exists,
@@ -23,7 +22,11 @@ from utils import (send_alert,
                    wait_for_sync_data,
                    retry)
 
+
 class Cli(object):
+    """
+    基于spark4.x的pyspark etl开发框架
+    """
     def __init__(
         self,
         app_name,
@@ -274,7 +277,8 @@ class Cli(object):
                         data_time=data_time, cnt=corrupt_cnt, partition_col=self.partition_col)
                     logging.warn(warn_msg)
                     if self.corrupt_record_cnt_alert and corrupt_cnt > self.corrupt_record_cnt_alert_threshold:
-                        send_alert(u"警告", warn_msg, code=self.alert_code)
+                        print(warn_msg)
+                        # send_alert(u"警告", warn_msg, code=self.alert_code)
                     if corrupt_cnt > self.corrupt_record_cnt_fail_threshold:
                         raise Exception("Too many corrupt records")
             except Exception as ex:
