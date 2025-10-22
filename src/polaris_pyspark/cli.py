@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import logging
@@ -178,7 +177,7 @@ class Cli(object):
 
     def register_udf(self, name, f, returnType=StringType()):
         """
-        wrapper of spark.udf.register
+         wrapper of spark.udf.register
         :param name:
         :param f:
         :param returnType:
