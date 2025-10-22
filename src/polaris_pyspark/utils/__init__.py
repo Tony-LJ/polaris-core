@@ -21,7 +21,7 @@ from pyspark.sql.types import StringType
 
 from ..templates import (get_decrypt_table_name, get_hour_to_day_et_sql,
                                  get_insert_partition_table_sql, get_decrypt_data_table_insertion_sql)
-from past.builtins import long  # Python 2 and 3 compatible
+
 
 # for ETL spark createOrReplaceTempView
 raw_data_tmp_view_name = "raw_data__"
@@ -237,22 +237,22 @@ def drop_table_partitions(spark, table_name, partition_specs):
             spark.hdfs.delete(spark.hadoop.fs.Path(partition_path), True)
 
 
-def send_alert(tag, alert, code=276):
-    """ wrap alert message with time and header, then send it to iPortal
-        @alert :: string
-    """
-    if not code:
-        logging.warn("No alert code, skip alert")
-    else:
-        if type(tag) != unicode:
-            tag = tag.decode('utf-8')
-        if type(alert) != unicode:
-            alert = alert.decode('utf-8')
-        requests.post('http://alert.jpushoa.com/v1/alert/',
-                      json={
-                          "code": code,  # 按需自己改, 发送给相应的组
-                          "desc": u" ".join([tag, u"\n", alert])
-                      })
+# def send_alert(tag, alert, code=276):
+#     """ wrap alert message with time and header, then send it to iPortal
+#         @alert :: string
+#     """
+#     if not code:
+#         logging.warn("No alert code, skip alert")
+#     else:
+#         if type(tag) != unicode:
+#             tag = tag.decode('utf-8')
+#         if type(alert) != unicode:
+#             alert = alert.decode('utf-8')
+#         requests.post('http://alert.jpushoa.com/v1/alert/',
+#                       json={
+#                           "code": code,  # 按需自己改, 发送给相应的组
+#                           "desc": u" ".join([tag, u"\n", alert])
+#                       })
 
 
 def get_valid_paths(spark, read_base_path, data_time):
@@ -489,7 +489,7 @@ def hour_to_day_etl(spark, hour_table, day_table, data_date, distinct_row=False,
                     spark, table_name=day_table, partition_spec="data_date="+last_day_time)
                 last_output_size = dfs_du_s(last_output_path, spark)
                 expansion_rate = float(last_output_size) / last_input_total_size
-                file_num = max(1, int(long(input_total_size * expansion_rate) / min_output_file_size))
+                file_num = max(1, int(input_total_size * expansion_rate / min_output_file_size))
             except Exception as ex:
                 if type(ex) is AssertionError and ex.message.startswith("empty table"):  # no history, no history based optimization
                     logging.warn("empty table, no history yet, no HBO is available. skip HBO")
@@ -752,7 +752,7 @@ def retry(on_exception, retry_interval_attr_name, max_retry_attr_name):
             if max_retry > 0:
                 logging.warn("max retries exceeded")
             error_msg = str(ex)
-            send_alert(u"错误", error_msg, code=self.alert_code)
+            # send_alert(u"错误", error_msg, code=self.alert_code)
             raise ex
 
         return wrapper
@@ -794,7 +794,8 @@ def estimate_expansion_rate(spark, read_base_path, data_time, output_table, part
 
 
 def estimate_output_partition_num(spark, read_base_path, data_time, expansion_rate, min_output_file_size=1024**3/2):
-    """ 根据膨胀率计算输出文件大小
+    """
+    根据膨胀率计算输出文件大小
     :param spark: SparkSession
     :param read_base_path: ','分割路径字符串, 可包含多个路径
     :param data_time: string,
@@ -803,7 +804,7 @@ def estimate_output_partition_num(spark, read_base_path, data_time, expansion_ra
     :return: int
     """
     input_size = get_input_size(read_base_path, data_time, spark)
-    est_output_size = long(input_size * expansion_rate)
+    est_output_size = input_size * expansion_rate
     est_output_par_num = max(1, int(est_output_size / min_output_file_size))
     return est_output_par_num
 
