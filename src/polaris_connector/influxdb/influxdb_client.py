@@ -53,7 +53,8 @@ class InfluxdbClient:
 
     @classmethod
     def write_data(cls, conf: dict, tbl: str, data_list: list):
-        """向influxdb写入数据
+        """
+        向influxdb写入数据
         :data_list 格式：[(time, tid, v1, v2, ...), ...]
         """
         cls._init(conf)

@@ -879,6 +879,17 @@ files = [
 ]
 
 [[package]]
+name = "docopt"
+version = "0.6.2"
+description = "Pythonic argument parser, that will make you smile"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"},
+]
+
+[[package]]
 name = "faker"
 version = "37.11.0"
 description = "Faker is a Python package that generates fake data for you."
@@ -1056,6 +1067,27 @@ files = [
     {file = "h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"},
     {file = "h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"},
 ]
+
+[[package]]
+name = "hdfs"
+version = "2.7.3"
+description = "HdfsCLI: API and command line interface for HDFS."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "hdfs-2.7.3.tar.gz", hash = "sha256:752a21e43f82197dce43697c73f454ba490838108c73a57a9247efb66d1c0479"},
+]
+
+[package.dependencies]
+docopt = "*"
+requests = ">=2.7.0"
+six = ">=1.9.0"
+
+[package.extras]
+avro = ["fastavro (>=0.21.19)"]
+dataframe = ["fastavro (>=0.21.19)", "pandas (>=0.14.1)"]
+kerberos = ["requests-kerberos (>=0.7.0)"]
 
 [[package]]
 name = "httpcore"
@@ -3575,4 +3607,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "7a6ffd6cb85067c5ceffa2f54b58fd883be2b3bc811e028394a3ad6ffc4e5ddd"
+content-hash = "eb366cce3e6bb8362f8eb36564437ec39cfefd557bb3d53b597a3736f4a426ed"
