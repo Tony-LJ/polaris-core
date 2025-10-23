@@ -21,14 +21,13 @@ class HdfsClient:
         print(f"Files in {hdfs_path}: {files}")
         return files
 
-
     def list_directory(self, path):
         """
         列出HDFS目录下的文件和目录
         :param path:
         :return:
         """
-        return self.client.list(path)['files']  # 返回包含文件信息的列表。每个文件信息包含name和type。
+        return self.client.list(path)['files']
 
     def read_file(self, path):
         """
@@ -36,8 +35,8 @@ class HdfsClient:
         :param path:
         :return:
         """
-        with self.client.read(path, encoding='utf-8') as reader:  # 根据需要调整编码方式。对于二进制数据，可以省略encoding参数。
-            return reader.read()  # 返回文件内容。对于大文件，可能需要分块读取。
+        with self.client.read(path, encoding='utf-8') as reader:
+            return reader.read()
 
     def list_files_and_dirs(self, hdfs_path):
         """
