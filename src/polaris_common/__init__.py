@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 
 from .http_client import HttpClient
-from .common_constant import ch_month_name
-from .common_constant import ch_week_name
+from .common_constant import month_name_cn
+from .common_constant import week_name_cn
 from .common_constant import DatetimeFormat
+from .common_constant import solar_terms_cn
+from .common_utils import CommonUtils
+
 
 __all__ = [
     'HttpClient',
-    'ch_month_name',
-    'ch_week_name',
+    'month_name_cn',
+    'week_name_cn',
     'DatetimeFormat',
+    'solar_terms_cn',
+    'CommonUtils',
 ]
 
