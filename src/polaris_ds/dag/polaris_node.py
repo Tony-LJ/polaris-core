@@ -17,6 +17,7 @@ class PolarisNode(object):
         self.end_time = None
         self.edges = []
         self.dependencies = []
+        self.execute_func = None
 
     def add_edge(self, target_node):
         """
@@ -27,6 +28,8 @@ class PolarisNode(object):
         self.edges.append(target_node)
 
     def execute(self):
+        if self.execute_func:
+            self.execute_func()
         self.start_time = time.time()
         print(f"Executing DAG Node:{self.node_id}...")
         # 模拟任务执行，例如：

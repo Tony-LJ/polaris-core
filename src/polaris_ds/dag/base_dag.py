@@ -9,6 +9,7 @@ file_name: base_dag.py
 
 import networkx as nx
 
+
 class BaseDAG:
     def __init__(self):
         self.graph = nx.DiGraph()
