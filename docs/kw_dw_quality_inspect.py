@@ -147,8 +147,9 @@ if __name__ == '__main__':
             print(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # ############# 生成每日质检报告
-    report_content = send_dw_quality_markdown_msg(current_date,meta_list,quality_error_lst,important_error_list,wanzhengxing_results,yizhixing_results,zhujianweiyi_results, zhunquexing_results)
-    msg_rebot.send_markdown(content=report_content)
+    if len(quality_error_lst) > 0:
+        report_content = send_dw_quality_markdown_msg(current_date,meta_list,quality_error_lst,important_error_list,wanzhengxing_results,yizhixing_results,zhujianweiyi_results, zhunquexing_results)
+        msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
 
     # TODO:
