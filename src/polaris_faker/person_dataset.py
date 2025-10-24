@@ -79,7 +79,7 @@ def generate_person_dataset(data_size, ration):
 
 
 if __name__ == '__main__':
-    data_size = 100   # 确定要造的数据数量
+    data_size = 100000   # 确定要造的数据数量
     ration = 0   # 确定重复比例
     # structured_gis = create_structured_gis()
     # print(structured_gis)
