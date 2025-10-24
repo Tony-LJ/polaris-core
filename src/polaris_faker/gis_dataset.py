@@ -32,6 +32,40 @@ def generate_ids(data_size, ration):
 
     return ids
 
+def create_fake_country_record(country='中国'):
+    print("生成国家记录")
+
+def create_fake_province_record(province='湖南省'):
+    print("生成省份记录")
+
+def create_fake_city_record(city='常德市'):
+    print("生成市区记录")
+
+def create_fake_county_record(county='桃源县'):
+    print("生成县级记录")
+
+def create_fake_address_record(country='中国', province='湖南省', city='常德市', county='桃源县'):
+    print("生成详细地址信息记录")
+
+def create_structured_gis(country, province, city, county):
+    """
+     创建GIS地理信息结构类型
+     type=1 => 国家、省、市、县、镇、街道，详细地址信息,etc
+    :param country:
+    :param province:
+    :param city:
+    :param county:
+    :param type:
+    :return:
+    """
+    structured_gis = {}
+    structured_gis["country"] = create_fake_country_record()
+    structured_gis["province"] = create_fake_province_record()
+    structured_gis["city"] = create_fake_city_record()
+    structured_gis["county"] = create_fake_county_record()
+    structured_gis["address"] = create_fake_address_record()
+
+
 def get_gis_dataset(data_size, ration):
     datas = []
     ids = generate_ids(data_size, ration)

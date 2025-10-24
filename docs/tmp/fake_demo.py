@@ -89,7 +89,6 @@ def create_structured_profile():
 if __name__ == '__main__':
     # 使用上述函数生成结构化数据
     structured_data = create_structured_profile()
-
     print(create_fake_call_record())
     print(create_fake_education_record())
     print(create_fake_credit_card_transaction())
