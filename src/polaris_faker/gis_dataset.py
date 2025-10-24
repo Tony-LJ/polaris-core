@@ -33,21 +33,54 @@ def generate_ids(data_size, ration):
     return ids
 
 def create_fake_country_record(country='中国'):
-    print("生成国家记录")
+    """
+    生成国家记录
+    :param country:
+    :return:
+    """
+    country = fake.country()
+    return country
 
 def create_fake_province_record(province='湖南省'):
-    print("生成省份记录")
+    """
+    生成省份记录
+    :param province:
+    :return:
+    """
+    province = fake.province()
+    return province
 
 def create_fake_city_record(city='常德市'):
-    print("生成市区记录")
+    """
+    生成市区记录
+    :param city:
+    :return:
+    """
+    city = fake.city()
+    return city
 
 def create_fake_county_record(county='桃源县'):
-    print("生成县级记录")
+    """
+    生成县级记录
+    :param county:
+    :return:
+    """
+    county = fake.address()
+    return county
 
 def create_fake_address_record(country='中国', province='湖南省', city='常德市', county='桃源县'):
-    print("生成详细地址信息记录")
+    """
+    生成详细地址信息记录
+    :param country:
+    :param province:
+    :param city:
+    :param county:
+    :return:
+    """
+    address = fake.address()
+    return address
 
-def create_structured_gis(country, province, city, county):
+def create_structured_gis(country='中国', province='湖南省', city='常德市', county='桃源县'):
     """
      创建GIS地理信息结构类型
      type=1 => 国家、省、市、县、镇、街道，详细地址信息,etc
@@ -65,25 +98,27 @@ def create_structured_gis(country, province, city, county):
     structured_gis["county"] = create_fake_county_record()
     structured_gis["address"] = create_fake_address_record()
 
+    return structured_gis
 
 def get_gis_dataset(data_size, ration):
     datas = []
     ids = generate_ids(data_size, ration)
 
     for id in ids:
-        country = '中国'
-        country_code = fake.country_code()
-        province = fake.random_element(elements=province_cn)
-        city = ""
-        address = fake.address()
-        datas.append({
-            'id': id,
-            'country': country,
-            'province': province,
-            'city': city,
-            'country_code': country_code,
-            'address': address,
-        })
+        # country = '中国'
+        # country_code = fake.country_code()
+        # province = fake.random_element(elements=province_cn)
+        # city = ""
+        # address = fake.address()
+        # datas.append({
+        #     'id': id,
+        #     'country': country,
+        #     'province': province,
+        #     'city': city,
+        #     'country_code': country_code,
+        #     'address': address,
+        # })
+        datas.append(create_structured_gis())
 
     return pd.DataFrame(datas)
 
@@ -92,8 +127,10 @@ def get_gis_dataset(data_size, ration):
 if __name__ == '__main__':
     data_size = 100   # 确定要造的数据数量
     ration = 0   # 确定重复比例
-    df = get_gis_dataset(data_size, ration)
-    print(df.to_string())
+    # structured_gis = create_structured_gis()
+    # print(structured_gis)
+    gis_dataset = get_gis_dataset(100,0)
+    print(gis_dataset.to_string())
 
 
 
