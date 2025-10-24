@@ -17,6 +17,11 @@ class HdfsClient:
         self.client = InsecureClient(host, user="hdfs")  # 使用InsecureClient进行非Kerberos认证连接。对于Kerberos认证，请使用KerberosClient。
 
     def list_files(self, hdfs_path):
+        """
+        列出文件
+        :param hdfs_path:
+        :return:
+        """
         files = self.client.list(hdfs_path)
         print(f"Files in {hdfs_path}: {files}")
         return files
