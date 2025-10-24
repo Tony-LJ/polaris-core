@@ -12,10 +12,11 @@ import pandas as pd
 import random
 
 from polaris_common.common_constant import province_cn
+from polaris_common.common_constant import country as world_country
+from polaris_common.common_utils import CommonUtils
 
 # fake = Faker()   # 初始化Faker实例
 fake = Faker("zh_CN")
-
 
 def generate_ids(data_size, ration):
     """
@@ -39,11 +40,13 @@ def get_gis_dataset(data_size, ration):
         country = '中国'
         country_code = fake.country_code()
         province = fake.random_element(elements=province_cn)
+        city = ""
         address = fake.address()
         datas.append({
             'id': id,
             'country': country,
             'province': province,
+            'city': city,
             'country_code': country_code,
             'address': address,
         })
@@ -51,12 +54,12 @@ def get_gis_dataset(data_size, ration):
     return pd.DataFrame(datas)
 
 
+
 if __name__ == '__main__':
     data_size = 100   # 确定要造的数据数量
     ration = 0   # 确定重复比例
     df = get_gis_dataset(data_size, ration)
     print(df.to_string())
-
 
 
 

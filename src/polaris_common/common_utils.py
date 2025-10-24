@@ -10,6 +10,18 @@ import uuid
 import time
 
 class CommonUtils:
+
+    @staticmethod
+    def get_dict_key_value(dict):
+        """
+        获取字典所有key,value
+        :param dict:
+        :return:
+        """
+        keys = dict.keys()
+        values = dict.values()
+        return keys, values
+
     @staticmethod
     def get_uuid(params: dict):
         """
