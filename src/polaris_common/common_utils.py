@@ -6,11 +6,13 @@ auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: common_utils.py
 """
+import os
 import uuid
 import time
 import secrets
 import string
 import random
+import hashlib
 
 class CommonUtils:
 
@@ -23,7 +25,7 @@ class CommonUtils:
         """
         return random.randint(n, m)
 
-    def create_random_0_1_number(self,n,m):
+    def create_random_n_m_number(self,n,m):
         """
         随机返回一个n-m之间的浮点数
         :return:
@@ -40,14 +42,28 @@ class CommonUtils:
         b = "".join([random.choice(string.ascii_letters) for _ in range(n - m)])
         return ''.join(random.sample(list(a + b), n))
 
+    def generate_ids(length, data_size, ration):
+        """
+        定义生成可重复ID的函数，其中参数ration为重复的ID占比，比如0.3
+        :param length: 生成字符串长度
+        :param data_size:
+        :param ration:
+        :return:
+        """
+        num_dupl = int(data_size*ration)
+        ids = [str(CommonUtils.generate_unique_id(length)) for _ in range(data_size - num_dupl)]
+        ids.extend(random.sample(ids, num_dupl))
+        random.shuffle(ids)
+
+        return ids
+
     @staticmethod
     def generate_unique_id(length=10):
-        # 定义要添加的字符集，包括大小写字母和数字
-        characters = string.ascii_letters + string.digits
-        # 使用secrets.choice来生成更安全的随机字符
-        secure_id = ''.join(secrets.choice(characters) for _ in range(length))
-
-        return secure_id
+        timestamp = str(int(time.time() * 1000))  # 使用毫秒级时间戳
+        random_part = os.urandom(8).hex()  # 生成一个随机的16进制字符串作为随机部分
+        combined = timestamp + random_part  # 组合时间戳和随机部分
+        hashed = hashlib.sha256(combined.encode()).hexdigest()  # 使用SHA-256哈希算法进行哈希处理
+        return hashed[:15]  # 取哈希值的前15位字符作为ID
 
     @staticmethod
     def get_dict_key_value(dict):
@@ -97,3 +113,5 @@ class CommonUtils:
         return _timer
 
 
+if __name__ == '__main__':
+    print(CommonUtils.generate_unique_id(15))

@@ -49,7 +49,7 @@ def create_structured_person(id):
 
 def get_gis_dataset(data_size, ration):
     datas = []
-    ids = CommonUtils.generate_unique_id()
+    ids  =CommonUtils.generate_ids(15,100,0)
 
     for id in ids:
         datas.append(create_structured_person(id))
