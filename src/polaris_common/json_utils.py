@@ -29,18 +29,18 @@ class JsonUtils:
 
 
 
-if __name__ == '__main__':
-    data = [
-        {"id": 1, "info": {"name": "Alice", "age": 30}, "hobbies": ["reading", "cycling"]},
-        {"id": 2, "info": {"name": "Bob", "age": 25}, "hobbies": ["gaming"]}
-    ]
-    data2 = {
-        "name": "Alice",
-        "age": 30,
-        "is_student": False,
-        "courses": ["Math", "Physics"],
-        "address": None
-    }
-
-    df = JsonUtils.json_to_df(data2)
-    print(df)
+# if __name__ == '__main__':
+#     data = [
+#         {"id": 1, "info": {"name": "Alice", "age": 30}, "hobbies": ["reading", "cycling"]},
+#         {"id": 2, "info": {"name": "Bob", "age": 25}, "hobbies": ["gaming"]}
+#     ]
+#     data2 = {
+#         "name": "Alice",
+#         "age": 30,
+#         "is_student": False,
+#         "courses": ["Math", "Physics"],
+#         "address": None
+#     }
+#
+#     df = JsonUtils.json_to_df(data2)
+#     print(df)

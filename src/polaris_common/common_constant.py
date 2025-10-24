@@ -9,18 +9,17 @@ file_name: common_constant.py
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36'
 
+
 # ################################# 时间日期
 # 中文月份名称
 month_name_cn = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]
 # 中文周名称
 week_name_cn = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
 # 24节气名称
-solar_terms_cn = [
-    "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至",
-    "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至"
-]
+solar_terms_cn = ["小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至","小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至"]
 # 12生效
 chinese_zodiacs =  ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"]
+
 
 # ############################## 正则表达式
 # 匹配邮箱：包含大小写字母，下划线，阿拉伯数字，点号，中划线
@@ -45,7 +44,6 @@ character_cn_pattern = '[\u4e00-\u9fa5]'
 digit_pattern = '^[0-9]*$'
 
 
-
 # ############################## 时间日期格式
 class DatetimeFormat:
     """
@@ -53,8 +51,8 @@ class DatetimeFormat:
     """
     DISPLAY_MONTH = '%Y-%m'
     DISPLAY_DATE = '%Y-%m-%d'
-    DISPLAY_DT = '%Y-%m-%d %H:%M:%S'
 
+    DISPLAY_DT = '%Y-%m-%d %H:%M:%S'
     SUFFIX_DT = '%Y%m%d%H%M%S'
     SUFFIX_DT_UNDERLINE = '%Y_%m_%d_%H_%M_%S'
 
@@ -71,14 +69,6 @@ class DatetimeFormat:
 
 
 
-if __name__ == '__main__':
-    pattern = re.compile(id_card_pattern)
-
-    strs = '小明的身份证号码是342623198910235163，手机号是13987692110'
-    result = pattern.findall(strs)
-
-    print(result)
-    ['342623198910235163']
 
 
 
