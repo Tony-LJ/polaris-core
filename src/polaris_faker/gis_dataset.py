@@ -36,8 +36,8 @@ def get_gis_dataset(data_size, ration):
     ids = generate_ids(data_size, ration)
 
     for id in ids:
-        country = ['中国']
-        country_code = fake.random_element(elements=country)
+        country = '中国'
+        country_code = fake.country_code()
         province = fake.random_element(elements=province_cn)
         address = fake.address()
         datas.append({
