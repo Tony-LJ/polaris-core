@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-descr: 人的信息数据集
+descr: 模拟生成人的信息数据集
 auther: lj.michale
 create_date: 2025/10/30 15:54
 file_name: person_dataset.py
@@ -11,25 +11,37 @@ from datetime import date
 import pandas as pd
 import random
 
-from polaris_common.common_constant import province_cn
-from polaris_common.common_constant import country as world_country
 from polaris_common.common_utils import CommonUtils
 
 # fake = Faker()   # 初始化Faker实例
 fake = Faker("zh_CN")
 
-
-def create_fake_country_record(country='中国'):
+def generate_name_record(name='中国'):
     """
-    生成国家记录
-    :param country:
+    生成姓名记录
+    :param name:
     :return:
     """
-    country = fake.country()
-    country_code = fake.country_code()
-    return country, country_code
+    name = "张珊"
+    return name
 
+def generate_age_record(age=18):
+    """
+    生成年龄记录
+    :param age:
+    :return:
+    """
+    age = 18
+    return age
 
+def generate_sex_record(sex='男'):
+    """
+    生成性别记录
+    :param sex:
+    :return:
+    """
+    sex = 18
+    return sex
 
 def create_structured_person(id):
     """
@@ -44,10 +56,19 @@ def create_structured_person(id):
     """
     structured_person = {}
     structured_person["id"] = id
+    structured_person["name"] = generate_name_record()
+    structured_person["age"] = generate_age_record()
+    structured_person["sex"] = generate_sex_record()
 
     return structured_person
 
-def get_gis_dataset(data_size, ration):
+def generate_person_dataset(data_size, ration):
+    """
+    模拟生成person dataset
+    :param data_size:
+    :param ration:
+    :return:
+    """
     datas = []
     ids  =CommonUtils.generate_ids(15,100,0)
 
@@ -62,7 +83,7 @@ if __name__ == '__main__':
     ration = 0   # 确定重复比例
     # structured_gis = create_structured_gis()
     # print(structured_gis)
-    gis_dataset = get_gis_dataset(100,0)
+    gis_dataset = generate_person_dataset(100,0)
     print(gis_dataset.to_string())
 
 

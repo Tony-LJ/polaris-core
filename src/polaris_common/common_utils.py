@@ -54,7 +54,6 @@ class CommonUtils:
         ids = [str(CommonUtils.generate_unique_id(length)) for _ in range(data_size - num_dupl)]
         ids.extend(random.sample(ids, num_dupl))
         random.shuffle(ids)
-
         return ids
 
     @staticmethod
