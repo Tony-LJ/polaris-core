@@ -39,7 +39,8 @@ def create_fake_country_record(country='中国'):
     :return:
     """
     country = fake.country()
-    return country
+    country_code = fake.country_code()
+    return country, country_code
 
 def create_fake_province_record(province='湖南省'):
     """
@@ -93,7 +94,7 @@ def create_structured_gis(id, country='中国', province='湖南省', city='常�
     """
     structured_gis = {}
     structured_gis["id"] = id
-    structured_gis["country"] = create_fake_country_record()
+    structured_gis["country"], structured_gis["country_code"] = create_fake_country_record()
     structured_gis["province"] = create_fake_province_record()
     structured_gis["city"] = create_fake_city_record()
     structured_gis["county"] = create_fake_county_record()
@@ -106,23 +107,9 @@ def get_gis_dataset(data_size, ration):
     ids = generate_ids(data_size, ration)
 
     for id in ids:
-        # country = '中国'
-        # country_code = fake.country_code()
-        # province = fake.random_element(elements=province_cn)
-        # city = ""
-        # address = fake.address()
-        # datas.append({
-        #     'id': id,
-        #     'country': country,
-        #     'province': province,
-        #     'city': city,
-        #     'country_code': country_code,
-        #     'address': address,
-        # })
         datas.append(create_structured_gis(id))
 
     return pd.DataFrame(datas)
-
 
 
 if __name__ == '__main__':
