@@ -80,7 +80,7 @@ def create_fake_address_record(country='中国', province='湖南省', city='常
     address = fake.address()
     return address
 
-def create_structured_gis(country='中国', province='湖南省', city='常德市', county='桃源县'):
+def create_structured_gis(id, country='中国', province='湖南省', city='常德市', county='桃源县'):
     """
      创建GIS地理信息结构类型
      type=1 => 国家、省、市、县、镇、街道，详细地址信息,etc
@@ -92,6 +92,7 @@ def create_structured_gis(country='中国', province='湖南省', city='常德�
     :return:
     """
     structured_gis = {}
+    structured_gis["id"] = id
     structured_gis["country"] = create_fake_country_record()
     structured_gis["province"] = create_fake_province_record()
     structured_gis["city"] = create_fake_city_record()
@@ -118,7 +119,7 @@ def get_gis_dataset(data_size, ration):
         #     'country_code': country_code,
         #     'address': address,
         # })
-        datas.append(create_structured_gis())
+        datas.append(create_structured_gis(id))
 
     return pd.DataFrame(datas)
 
