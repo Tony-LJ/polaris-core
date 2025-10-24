@@ -86,46 +86,46 @@ if __name__ == '__main__':
         # id 表名，检测代码，上下限阈值
         id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[10]
         print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{},重要性:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max,importance))
-        meta_cnt = sql_impala_read(check_sql)
-        # 如果检测结果 >0 ,则收集检测结果
-        if meta_cnt[0][0] > 1:
-            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            quality_error_lst.append(result_set)
-            print("【=None情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
-            error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
-            if check_type == "完整性":
+        if check_type == "完整性":
+            meta_cnt = sql_impala_read(check_sql)
+            if meta_cnt[0][0] == 0:
+                result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                quality_error_lst.append(result_set)
+                print("【完整性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 wanzhengxing_results.append(table_name)
-        if meta_cnt[0][0] > 0:
-            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            quality_error_lst.append(result_set)
-            print("【=None情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
-            error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
-            if check_type == "主键唯一":
+        elif check_type == "主键唯一":
+            meta_cnt = sql_impala_read(check_sql)
+            if meta_cnt[0][0] > 0:
+                result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                quality_error_lst.append(result_set)
+                print("【主键唯一】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhujianweiyi_results.append(table_name)
-            elif check_type == "一致性":
+
+        elif check_type == "一致性":
+            meta_cnt = sql_impala_read(check_sql)
+            if meta_cnt[0][0] > 0:
+                result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                quality_error_lst.append(result_set)
+                print("【一致性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 yizhixing_results.append(table_name)
-            if importance == "p0":
-                important_error_list.append("=None规则:{}".format(check_sql))
-        elif meta_cnt[0][0] < threshold_min:
-            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            quality_error_lst.append(result_set)
-            print("【<最小阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{}".format(i,check_type,table_name,check_sql,threshold_min))
-            # error_list.append("<最小阀值规则:{}".format(table_name))
-            error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
-            if check_type == "准确性":
+
+        elif check_type == "准确性":
+            meta_cnt = sql_impala_read(check_sql)
+            if meta_cnt[0][0] < threshold_min:
+                result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                quality_error_lst.append(result_set)
+                print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhunquexing_results.append(table_name)
-            if importance == "p0":
-                important_error_list.append("<最小阀值规则:{}".format(check_sql))
-        elif meta_cnt[0][0] > threshold_max:
-            result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-            quality_error_lst.append(result_set)
-            print("【>最大阀值情况】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最大阀值:{}".format(i,check_type,table_name,check_sql,threshold_max))
-            # error_list.append(">最大阀值规则:{}".format(table_name))
-            error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
-            if check_type == "准确性":
+            elif meta_cnt[0][0] > threshold_max:
+                result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                quality_error_lst.append(result_set)
+                print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhunquexing_results.append(table_name)
-            if importance == "p0":
-                important_error_list.append(">最大阀值规则:{}".format(check_sql))
         else:
             print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
 
