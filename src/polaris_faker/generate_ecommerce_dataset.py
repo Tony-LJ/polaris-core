@@ -30,7 +30,7 @@ def generate_ids(data_sizes, ration):
     return ids
 
 
-def generate_order_dataset_func(data_sizes, ration):
+def get_order_dataset(data_sizes, ration):
     """
     模拟生成电商行业销售数据
     :param data_sizes:
@@ -73,10 +73,10 @@ def generate_order_dataset_func(data_sizes, ration):
 
     return pd.DataFrame(datas)  # 将数据转化为DataFrame形式，作为返回值
 
-if __name__ == '__main__':
-    data_size = 100   # 确定要造的数据数量
-    ration = 0.3   # 确定重复比例
-    df = generate_order_dataset_func(data_size, ration)
-    print(df.to_string())
-    # 查找 'id' 列中重复的行
-    print(df[df.duplicated(subset='id')])
+# if __name__ == '__main__':
+#     data_size = 100   # 确定要造的数据数量
+#     ration = 0.3   # 确定重复比例
+#     df = get_order_dataset(data_size, ration)
+#     print(df.to_string())
+#     # 查找 'id' 列中重复的行
+#     print(df[df.duplicated(subset='id')])

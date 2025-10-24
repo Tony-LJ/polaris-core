@@ -86,6 +86,7 @@ if __name__ == '__main__':
         # id 表名，检测代码，上下限阈值
         id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[10]
         print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{},重要性:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max,importance))
+
         if check_type == "完整性":
             meta_cnt = sql_impala_read(check_sql)
             if meta_cnt[0][0] == 0:
@@ -94,6 +95,7 @@ if __name__ == '__main__':
                 print("【完整性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 wanzhengxing_results.append(table_name)
+
         elif check_type == "主键唯一":
             meta_cnt = sql_impala_read(check_sql)
             if meta_cnt[0][0] > 0:
@@ -138,7 +140,11 @@ if __name__ == '__main__':
             print(f'''{result_set[2]}任务失败:{result_set[1]} 检查 {result_set[4]} 报错!''')
 
     # ############# 生成每日质检报告
-    report_content = send_dw_quality_markdown_msg(current_date,meta_list,quality_error_lst,important_error_list,wanzhengxing_results,yizhixing_results,zhujianweiyi_results, zhunquexing_results)
+    report_content = send_dw_quality_markdown_msg(current_date,
+                                                  meta_list,
+                                                  quality_error_lst,
+                                                  important_error_list,
+                                                  wanzhengxing_results,yizhixing_results,zhujianweiyi_results, zhunquexing_results)
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
 
