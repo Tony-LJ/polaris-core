@@ -102,7 +102,7 @@ def create_structured_gis(id, country='中国', province='湖南省', city='常�
 
     return structured_gis
 
-def get_gis_dataset(data_size, ration):
+def generate_gis_dataset(data_size=100, ration=0):
     datas = []
     ids = generate_ids(data_size, ration)
 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     ration = 0   # 确定重复比例
     # structured_gis = create_structured_gis()
     # print(structured_gis)
-    gis_dataset = get_gis_dataset(100,0)
+    gis_dataset = generate_gis_dataset(100,0)
     print(gis_dataset.to_string())
 
 

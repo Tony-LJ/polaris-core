@@ -7,9 +7,7 @@ create_date: 2025/10/30 15:54
 file_name: product_dataset.py
 """
 from faker import Faker
-from datetime import date
 import pandas as pd
-import random
 
 from polaris_common.common_utils import CommonUtils
 
