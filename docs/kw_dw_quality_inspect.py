@@ -144,7 +144,7 @@ if __name__ == '__main__':
                                                   meta_list,
                                                   quality_error_lst,
                                                   important_error_list,
-                                                  wanzhengxing_results,yizhixing_results,zhujianweiyi_results, zhunquexing_results)
+                                                  wanzhengxing_results, yizhixing_results, zhujianweiyi_results, zhunquexing_results)
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
 
