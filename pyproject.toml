@@ -50,7 +50,7 @@ packages = [
     {include = "polaris_mqtt", from = "src"},
 #    {include = "polaris_crypto", from = "src"},
     {include = "polaris_enums", from = "src"},
-#    {include = "polaris_exception", from = "src"},
+#    {include = "polaris_except", from = "src"},
     {include = "polaris_logger", from = "src"},
     {include = "polaris_ds", from = "src"},
     {include = "polaris_message", from = "src"},

@@ -6,15 +6,11 @@ auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: common_constant.py
 """
-
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36'
-
 # 中文月份名称
 month_name_cn = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]
-
 # 中文周名称
 week_name_cn = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
-
 # 24节气名称
 solar_terms_cn = [
     "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至",
