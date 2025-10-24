@@ -8,8 +8,37 @@ file_name: common_utils.py
 """
 import uuid
 import time
+import secrets
+import string
+import random
 
 class CommonUtils:
+
+    def create_random_0_1_number(self):
+        """
+        随机返回一个0-1之间的浮点数
+        :return:
+        """
+        return random.random()
+
+    def create_string_number(self,n):
+        """
+        生成一串指定位数的字符+数组混合的字符串
+        :return:
+        """
+        m = random.randint(1, n)
+        a = "".join([str(random.randint(0, 9)) for _ in range(m)])
+        b = "".join([random.choice(string.ascii_letters) for _ in range(n - m)])
+        return ''.join(random.sample(list(a + b), n))
+
+    @staticmethod
+    def generate_unique_id(length=10):
+        # 定义要添加的字符集，包括大小写字母和数字
+        characters = string.ascii_letters + string.digits
+        # 使用secrets.choice来生成更安全的随机字符
+        secure_id = ''.join(secrets.choice(characters) for _ in range(length))
+
+        return secure_id
 
     @staticmethod
     def get_dict_key_value(dict):
