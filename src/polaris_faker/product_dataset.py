@@ -27,6 +27,7 @@ def generate_product_name_record(product_name='水果'):
 
 def create_structured_product(id):
     """
+    生成产品信息结构
     :return:
     """
     structured_product = {}
@@ -35,7 +36,7 @@ def create_structured_product(id):
 
     return structured_product
 
-def generate_product_dataset(data_size, ration):
+def generate_product_dataset(data_size=100, ration=0):
     """
     模拟生成person dataset
     :param data_size:
@@ -43,7 +44,7 @@ def generate_product_dataset(data_size, ration):
     :return:
     """
     datas = []
-    ids = CommonUtils.generate_ids(15,data_size,0)
+    ids = CommonUtils.generate_ids(15,data_size,ration)
 
     for id in ids:
         datas.append(create_structured_product(id))
