@@ -14,12 +14,21 @@ import random
 
 class CommonUtils:
 
-    def create_random_0_1_number(self):
+    def create_random_int_number(self,n,m):
         """
-        随机返回一个0-1之间的浮点数
+        随机返回从n-m之间的整数
+        :param n:
+        :param m:
         :return:
         """
-        return random.random()
+        return random.randint(n, m)
+
+    def create_random_0_1_number(self,n,m):
+        """
+        随机返回一个n-m之间的浮点数
+        :return:
+        """
+        return random.uniform(n, m)
 
     def create_string_number(self,n):
         """
