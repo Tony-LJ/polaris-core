@@ -7,6 +7,7 @@ create_date: 2025/9/27 15:54
 -------------------------------------------
 部署命令：
 $SPARK_HOME/bin/spark-submit --master yarn --deploy-mode client --executor-cores 1 pyspark_demo2.py
+$SPARK_HOME/bin/spark-submit --master local[*] --executor-cores 1 pyspark_demo2.py
 """
 
 from pyspark.sql import SparkSession
@@ -29,7 +30,7 @@ def convertCase(str):
 def main():
     # hive.metastore.uris: 访问hive metastore 服务的地址
     spark = SparkSession.builder \
-        .appName('SparkByTry') \
+        .appName('kw-spark-demo2') \
         .config("hive.metastore.uris", "thrift://10.192.0.71:9083") \
         .enableHiveSupport() \
         .getOrCreate()
