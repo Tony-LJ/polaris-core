@@ -33,5 +33,5 @@ def convert_currency(amount, currency='CNY'):
 
 if __name__ == '__main__':
     http_client = HttpClient()
-    dict = {'key': public_api_tanshu_key,'from': 'CNY', 'to': 'USD', 'money': 1}
+    dict = {'key': public_api_tanshu_key,'from': 'USD', 'to': 'CNY', 'money': 10}
     print(http_client.get(url=public_api_tanshu,params=dict).text)
