@@ -6,6 +6,10 @@ auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: common_constant.py
 """
+# ############################## 公共API
+public_api_tanshu = "https://api.tanshuapi.com/api/exchange/v1/index2"
+public_api_tanshu_key = "089ec3eb015de8e2fa0a23bb2233cdd8"
+
 # ################################# 网络信息
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36'
 
@@ -222,25 +226,30 @@ chinese_zodiacs =  ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡",
 
 # ############################## 正则表达式
 # 匹配邮箱：包含大小写字母，下划线，阿拉伯数字，点号，中划线
-email_pattern = '[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)'
+email_pattern = r'[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)'
 # 匹配身份证：地区： [1-9]\d{5} 年的前两位： (18|19|([23]\d)) 1800-2399 年的后两位： \d{2} 月份： ((0[1-9])|(10|11|12)) 天数： (([0-2][1-9])|10|20|30|31) 闰年不能禁止29+ 三位顺序码： \d{3} 两位顺序码： \d{2} 校验码： [0-9Xx]
-id_card_pattern = '[1-9]\d{5}(?:18|19|(?:[23]\d))\d{2}(?:(?:0[1-9])|(?:10|11|12))(?:(?:[0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]'
+id_card_pattern = r'[1-9]\d{5}(?:18|19|(?:[23]\d))\d{2}(?:(?:0[1-9])|(?:10|11|12))(?:(?:[0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]'
 # 国内手机号码：手机号都为11位，且以1开头，第二位一般为3、5、6、7、8、9 ，剩下八位任意数字
-phone_number_cn_pattern = '1(3|4|5|6|7|8|9)\d{9}'
+phone_number_cn_pattern = r'1(3|4|5|6|7|8|9)\d{9}'
 # 国内固定电话：区号3\~4位，号码7\~8位
-tel_number_cn_pattern = '\d{3}-\d{8}|\d{4}-\d{7}'
+tel_number_cn_pattern = r'\d{3}-\d{8}|\d{4}-\d{7}'
 # 域名：包含http:\\或https:\\
-domain_pattern = '(?:(?:http:\/\/)|(?:https:\/\/))?(?:[\w](?:[\w\-]{0,61}[\w])?\.)+[a-zA-Z]{2,6}(?:\/)'
+domain_pattern = r'(?:(?:http:\/\/)|(?:https:\/\/))?(?:[\w](?:[\w\-]{0,61}[\w])?\.)+[a-zA-Z]{2,6}(?:\/)'
 # IP地址：IP地址的长度为32位(共有2^32个IP地址)，分为4段，每段8位，用十进制数字表示,每段数字范围为0～255，段与段之间用句点隔开　
-ip_pattern = '((?:(?:25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d?\d))'
+ip_pattern = r'((?:(?:25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d?\d))'
 # 日期：常见日期格式：yyyyMMdd、yyyy-MM-dd、yyyy/MM/dd、yyyy.MM.dd
-datetime_pattern = '\d{4}(?:-|\/|.)\d{1,2}(?:-|\/|.)\d{1,2}'
+datetime_pattern = r'\d{4}(?:-|\/|.)\d{1,2}(?:-|\/|.)\d{1,2}'
 # 国内邮政编码：我国的邮政编码采用四级六位数编码结构:前两位数字表示省（直辖市、自治区）,第三位数字表示邮区；第四位数字表示县（市）,最后两位数字表示投递局（所）
-postal_code_cn_pattern = '[1-9]\d{5}(?!\d)'
+postal_code_cn_pattern = r'[1-9]\d{5}(?!\d)'
 # 中文字符：
-character_cn_pattern = '[\u4e00-\u9fa5]'
+character_cn_pattern = r'[\u4e00-\u9fa5]'
 # 验证数字：
-digit_pattern = '^[0-9]*$'
+digit_pattern = r'^[0-9]*$'
+
+# ############################## DataOps相关配置
+gitlab_url = "https://git.example.com"
+gitlab_private_token = "xxxxxxxxxxxxxxxxxx"
+
 
 
 # ############################## 时间日期格式

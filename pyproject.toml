@@ -38,6 +38,7 @@ dependencies = [
     "hdfs (>=2.7.3,<3.0.0)",
     "jpype1 (>=1.6.0,<2.0.0)",
     "sqlalchemy (>=2.0.44,<3.0.0)",
+    "python-gitlab (>=6.5.0,<7.0.0)",
 ]
 
 [tool.poetry]

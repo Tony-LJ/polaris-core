@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .manufacture_business_rules import manufacture_business_rules
+from .manufacture_business_rules import calc_product_type
 
 __all__ = [
-    'manufacture_business_rules'
+    'calc_product_type'
 ]
