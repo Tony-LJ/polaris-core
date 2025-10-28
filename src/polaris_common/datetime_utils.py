@@ -8,23 +8,22 @@ file_name: datetime_utils.py
 from datetime import datetime
 
 
-class DatetimeUtils:
+def get_current_time(format):
     """
-    日期处理类
+    获取当前日期或者时间戳
+    :param format: "%Y-%m-%d %H:%M:%S"
+    :return:
     """
-    def __init__(self,datetime,format):
-        self.datetime = datetime
-        self.format = format
-
-    def get_current_time(self,format):
-        """
-        获取当前日期
-        :param format: "%Y-%m-%d %H:%M:%S"
-        :return:
-        """
-        current_time = datetime.now()
+    current_time = datetime.now()
+    formatted_time = None
+    if format != "timestamp":
         formatted_time = current_time.strftime(format)
+    elif format == "timestamp":
+        formatted_time = current_time.timestamp()
 
-        return formatted_time
+    return formatted_time
 
 
+
+if __name__ == '__main__':
+    print(get_current_time("timestamp"))
