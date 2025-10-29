@@ -6,6 +6,7 @@ auther: lj.michale
 create_date: 2025/10/28 15:54
 file_name: dim_date_dataset.py
 """
+
 from datetime import date
 import calendar
 import uuid
@@ -17,6 +18,8 @@ from lunarcalendar import Converter
 import holidays
 from datetime import datetime
 from dateutil.rrule import rrule, DAILY
+
+from polaris_common.holiday_utils import is_workdays
 
 cn_holidays = holidays.China()
 
@@ -73,7 +76,7 @@ def create_structured_dim_date(date):
     # 季度
     structured_dim_date["season"] = (date.month - 1) // 3 + 1
     # 是否工作日
-    structured_dim_date["is_work_day"] = ""
+    structured_dim_date["is_work_day"] = is_workdays(date)
     # 是否节假日
     structured_dim_date["is_holiday"] = cn_holidays.get(pd.Timestamp(date))
     # etl计算日
