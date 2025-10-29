@@ -43,6 +43,10 @@ def create_structured_dim_date(id):
     structured_dim_date["season"] = ""
     # 是否工作日
     structured_dim_date["is_work_day"] = ""
+    # 是否节假日
+    structured_dim_date["is_holiday"] = ""
+    # etl计算日
+    structured_dim_date["etl_date"] = ""
 
     return structured_dim_date
 
