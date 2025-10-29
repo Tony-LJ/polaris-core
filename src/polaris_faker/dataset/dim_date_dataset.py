@@ -41,7 +41,7 @@ def create_structured_dim_date(date):
     # 当年年末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["year_last_day"] = (datetime(date.year, 12, 31) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 当月月初(yyyy-MM-dd HH:mm:ss)
-    structured_dim_date["month_first_day"] = ""
+    structured_dim_date["month_first_day"] = date.replace(day=1).strftime("%Y-%m-%d %H:%M:%S")
     # 当月月末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["month_last_day"] = ""
     # 当日日初(yyyy-MM-dd HH:mm:ss)
