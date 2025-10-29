@@ -6,6 +6,7 @@ auther: lj.michale
 create_date: 2025/10/28 15:54
 file_name: dim_date_dataset.py
 """
+import calendar
 import uuid
 import pandas as pd
 from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign
@@ -18,7 +19,6 @@ def get_day_record(day):
 def create_structured_dim_date(date):
     """
     生成日期维度表schema
-    :param id:
     :param date:
     :return:
     """
@@ -43,7 +43,7 @@ def create_structured_dim_date(date):
     # 当月月初(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["month_first_day"] = date.replace(day=1).strftime("%Y-%m-%d %H:%M:%S")
     # 当月月末(yyyy-MM-dd HH:mm:ss)
-    structured_dim_date["month_last_day"] = ""
+    structured_dim_date["month_last_day"] = (date.replace(day=calendar.monthrange(date.year, date.month)[1]) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 当日日初(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["day_first_day"] = ""
     # 当日日末(yyyy-MM-dd HH:mm:ss)
