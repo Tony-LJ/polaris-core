@@ -6,14 +6,17 @@ auther: lj.michale
 create_date: 2025/10/28 15:54
 file_name: dim_date_dataset.py
 """
+from datetime import date
 import calendar
 import uuid
 import pandas as pd
 from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign, english_weekday_to_chinese, \
-    get_current_time, convert_date_format, is_valid_date_format
+    get_current_time, convert_date_format, is_valid_date_format, is_valid_date
 from datetime import datetime, timedelta
 from lunarcalendar import Converter
 import holidays
+from datetime import datetime
+from dateutil.rrule import rrule, DAILY
 
 cn_holidays = holidays.China()
 
@@ -36,7 +39,7 @@ def create_structured_dim_date(date):
     # 24节气
     # structured_dim_date["solar_term"] = get_solar_term(date)
     # 农历日期-年月日(yyyy-MM-dd)
-    structured_dim_date["lunar_date"] =  convert_date_format(is_valid_date_format(str((Converter.Solar2Lunar(date)).year) + "-" + str((Converter.Solar2Lunar(date)).month) + "-" + str((Converter.Solar2Lunar(date)).day)))
+    # structured_dim_date["lunar_date"] =  convert_date_format(is_valid_date_format(str((Converter.Solar2Lunar(date)).year) + "-" + str((Converter.Solar2Lunar(date)).month) + "-" + str((Converter.Solar2Lunar(date)).day)))
     # 年月(yyyy-MM)
     structured_dim_date["year_month"] = date.strftime("%Y-%m")
     # 月(MM)
@@ -60,9 +63,9 @@ def create_structured_dim_date(date):
     # 当日日末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["day_last_day"] = (date.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 本年第几天
-    structured_dim_date["day_n_year"] = ""
+    structured_dim_date["day_n_year"] = date.timetuple().tm_yday
     # 本月第几天
-    structured_dim_date["day_n_month"] = ""
+    structured_dim_date["day_n_month"] = (date - date.replace(day=1)).days + 1
     # 星期
     structured_dim_date["week_day"] = english_weekday_to_chinese(date.strftime("%A"))
     # 当年第几周
@@ -78,20 +81,26 @@ def create_structured_dim_date(date):
 
     return structured_dim_date
 
-def generate_dim_date_dataset(start_date='2000-01-01', end_date='2025-12-31'):
+def generate_dim_date_dataset(start_datetime, end_datetime):
     """
     生成真实数仓日期维度表
     :param start_date: 开始日期
     :param end_date: 结束日期
     :return:
     """
+    date_list = list(rrule(DAILY, dtstart=start_datetime, until=end_datetime))
+    valid_date_tmp_array = []
+    for date in date_list:
+        valid_date_tmp_array.append(date.strftime('%Y-%m-%d'))
+
     datas = []
-    for date in pd.date_range(start=start_date,end=end_date):
-        datas.append(create_structured_dim_date(date))
+    valid_date_array = [date for date in valid_date_tmp_array if is_valid_date(date)]
+    for date_str in valid_date_array:
+        datas.append(create_structured_dim_date(datetime.strptime(date_str, "%Y-%m-%d")))
 
     return pd.DataFrame(datas)
 
 
 if __name__ == '__main__':
-    print(generate_dim_date_dataset("2025-01-01", "2025-12-31").to_string())
+    print(generate_dim_date_dataset(datetime(2024, 1, 1), datetime(2025, 12, 31)).to_string())
 

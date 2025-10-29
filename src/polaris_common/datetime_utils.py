@@ -110,7 +110,8 @@ def convert_date_format(date_str):
     """
     formatted_date = ""
     if "-2-29" in date_str:
-         return re.sub(r'-2-29', '-02-29', date_str)
+         date = re.sub(r'-2-29', '-02-29', date_str)
+         return date
     elif date_str != None:
         date_obj = datetime.strptime(date_str, "%Y-%m-%d")
         # 使用strftime将datetime对象格式化为所需的字符串格式
@@ -119,6 +120,13 @@ def convert_date_format(date_str):
         formatted_date = date_str
 
     return formatted_date
+
+def is_valid_date(date_str):
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
 
 def is_valid_date_format(date_string, format="%Y-%m-%d"):
     if "2-29" in date_string:
