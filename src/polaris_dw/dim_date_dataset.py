@@ -41,7 +41,7 @@ def create_structured_dim_date(date):
     structured_dim_date["month"] = date.strftime("%m")
     # 年(yyyy)
     structured_dim_date["year"] = date.strftime("%Y")
-    # 年生肖
+    # 年所属生肖
     structured_dim_date["zodiac"] = get_zodiac_year(date.year)
     # 星座
     structured_dim_date["aries"] = get_zodiac_sign(date.month,date.day)
@@ -66,7 +66,7 @@ def create_structured_dim_date(date):
     # 当年第几周
     structured_dim_date["week_n_year"] = date.isocalendar().week
     # 季度
-    structured_dim_date["season"] = (date.month - 1) // 3 + 1
+    structured_dim_date["quarter"] = (date.month - 1) // 3 + 1
     # 是否工作日
     structured_dim_date["is_work_day"] = is_workdays(date)
     # 是否节假日
