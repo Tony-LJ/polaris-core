@@ -55,7 +55,7 @@ def create_structured_dim_date(date):
     # 星期
     structured_dim_date["week_day"] = english_weekday_to_chinese(date.strftime("%A"))
     # 当年第几周
-    structured_dim_date["week_n_year"] = ""
+    structured_dim_date["week_n_year"] = date.isocalendar().week
     # 年周
     structured_dim_date["year_week"] = ""
     # 季度
