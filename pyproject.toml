@@ -47,6 +47,7 @@ dependencies = [
 
 [tool.poetry]
 packages = [
+    {include = "polaris_dw", from = "src"},
     {include = "polaris_kw", from = "src"},
     {include = "polaris_schedule", from = "src"},
 #    {include = "polaris_core", from = "src"},
