@@ -137,13 +137,14 @@ def is_valid_date_format(date_string, format="%Y-%m-%d"):
             return date_string
         except ValueError:
             return None
-def get_lunar_dt(dt):
+
+def get_lunar_dt(date):
     """
     计算农历日期
     :param dt:
     :return:
     """
-    ymd = dt.split('-')
+    ymd = date.split('-')
     lunar = lunardate.LunarDate.fromSolarDate(int(ymd[0]), int(ymd[1]), int(ymd[2]))
     return "%d-%02d-%02d" % (lunar.year, lunar.month, lunar.day)
 

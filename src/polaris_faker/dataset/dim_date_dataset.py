@@ -12,20 +12,14 @@ import calendar
 import uuid
 import pandas as pd
 from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign, english_weekday_to_chinese, \
-    get_current_time, convert_date_format, is_valid_date_format, is_valid_date, get_lunar_dt
-from datetime import datetime, timedelta
-from lunarcalendar import Converter
+    get_current_time, is_valid_date, get_lunar_dt
+from datetime import timedelta
 import holidays
 from datetime import datetime
 from dateutil.rrule import rrule, DAILY
-
 from polaris_common.holiday_utils import is_workdays
 
 cn_holidays = holidays.China()
-
-def get_day_record(day):
-
-    return day
 
 def create_structured_dim_date(date):
     """
@@ -105,5 +99,5 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
 
 
 if __name__ == '__main__':
-    print(generate_dim_date_dataset(datetime(2009, 1, 1), datetime(2025, 12, 31)).to_string())
+    print(generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31)).to_string())
 
