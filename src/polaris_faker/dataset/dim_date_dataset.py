@@ -9,7 +9,7 @@ file_name: dim_date_dataset.py
 import uuid
 import pandas as pd
 from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign
-
+from datetime import datetime, timedelta
 
 def get_day_record(day):
 
@@ -37,9 +37,9 @@ def create_structured_dim_date(date):
     # 星座
     structured_dim_date["aries"] = get_zodiac_sign(date.month,date.day)
     # 当年年初(yyyy-MM-dd HH:mm:ss)
-    structured_dim_date["year_first_day"] = ""
+    structured_dim_date["year_first_day"] = datetime(date.year, 1, 1).strftime("%Y-%m-%d %H:%M:%S")
     # 当年年末(yyyy-MM-dd HH:mm:ss)
-    structured_dim_date["year_last_day"] = ""
+    structured_dim_date["year_last_day"] = (datetime(date.year, 12, 31) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 当月月初(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["month_first_day"] = ""
     # 当月月末(yyyy-MM-dd HH:mm:ss)
