@@ -29,8 +29,8 @@ def generate_dim_region_dataset():
     生成真实数仓地址维度表
     :return:
     """
-
     datas = []
+
     for data in datas:
         datas.append(create_structured_dim_region(data))
 
