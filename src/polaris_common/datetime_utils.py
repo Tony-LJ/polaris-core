@@ -5,6 +5,7 @@ auther: lj.michale
 create_date: 2025/9/19 17:11
 file_name: datetime_utils.py
 """
+import re
 from datetime import datetime
 import pytz
 
@@ -101,6 +102,34 @@ def english_weekday_to_chinese(weekday_en):
     }
     return weekdays_en_to_cn.get(weekday_en, "未知")
 
+def convert_date_format(date_str):
+    """
+    使用strptime将字符串解析为datetime对象
+    :param date_str:
+    :return:
+    """
+    formatted_date = ""
+    if "2-29" in date_str:
+         return re.sub(r'2-29', '02-29', date_str)
+    elif date_str != None:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        # 使用strftime将datetime对象格式化为所需的字符串格式
+        formatted_date = date_obj.strftime("%Y-%m-%d")
+    else:
+        formatted_date = date_str
+
+    return formatted_date
+
+def is_valid_date_format(date_string, format="%Y-%m-%d"):
+    if "2-29" in date_string:
+        return date_string
+    else:
+        try:
+            datetime.strptime(date_string, format)
+            return date_string
+        except ValueError:
+            return None
 
 if __name__ == '__main__':
     print(get_current_time("timestamp"))
+    print(convert_date_format(is_valid_date_format("2025-2-29")))

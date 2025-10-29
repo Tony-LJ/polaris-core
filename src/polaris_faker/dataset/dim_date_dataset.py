@@ -9,8 +9,13 @@ file_name: dim_date_dataset.py
 import calendar
 import uuid
 import pandas as pd
-from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign, english_weekday_to_chinese
+from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign, english_weekday_to_chinese, \
+    get_current_time, convert_date_format, is_valid_date_format
 from datetime import datetime, timedelta
+from workalendar.asia import China
+from lunarcalendar import Converter
+import re
+
 
 def get_day_record(day):
 
@@ -24,8 +29,10 @@ def create_structured_dim_date(date):
     """
     structured_dim_date = {}
     structured_dim_date["id"] = uuid.uuid4()
-    # 日期-年月日(yyyy-MM-dd)
+    # 公历日期-年月日(yyyy-MM-dd)
     structured_dim_date["day"] = date
+    # 农历日期-年月日(yyyy-MM-dd)
+    structured_dim_date["lunar_date1"] =  convert_date_format(is_valid_date_format(str((Converter.Solar2Lunar(date)).year) + "-" + str((Converter.Solar2Lunar(date)).month) + "-" + str((Converter.Solar2Lunar(date)).day)))
     # 年月(yyyy-MM)
     structured_dim_date["year_month"] = date.strftime("%Y-%m")
     # 月(MM)
@@ -56,16 +63,14 @@ def create_structured_dim_date(date):
     structured_dim_date["week_day"] = english_weekday_to_chinese(date.strftime("%A"))
     # 当年第几周
     structured_dim_date["week_n_year"] = date.isocalendar().week
-    # 年周
-    structured_dim_date["year_week"] = ""
     # 季度
-    structured_dim_date["season"] = ""
+    structured_dim_date["season"] = (date.month - 1) // 3 + 1
     # 是否工作日
     structured_dim_date["is_work_day"] = ""
     # 是否节假日
     structured_dim_date["is_holiday"] = ""
     # etl计算日
-    structured_dim_date["etl_date"] = ""
+    structured_dim_date["etl_date"] = get_current_time("%Y-%m-%d %H:%M:%S")
 
     return structured_dim_date
 
@@ -85,3 +90,4 @@ def generate_dim_date_dataset(start_date='2000-01-01', end_date='2025-12-31'):
 
 if __name__ == '__main__':
     print(generate_dim_date_dataset("2025-01-01", "2025-12-31").to_string())
+

@@ -39,6 +39,8 @@ dependencies = [
     "jpype1 (>=1.6.0,<2.0.0)",
     "sqlalchemy (>=2.0.44,<3.0.0)",
     "python-gitlab (>=6.5.0,<7.0.0)",
+    "workalendar (>=17.0.0,<18.0.0)",
+    "lunarcalendar (>=0.0.9,<0.0.10)",
 ]
 
 [tool.poetry]
