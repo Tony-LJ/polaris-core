@@ -8,9 +8,15 @@ file_name: dim_date_dataset.py
 """
 import pandas as pd
 
-def create_structured_dim_date(id):
+def get_day_record(day):
+
+    return day
+
+def create_structured_dim_date(id, date):
     """
     生成日期维度表schema
+    :param id:
+    :param date:
     :return:
     """
     structured_dim_date = {}
@@ -23,6 +29,12 @@ def create_structured_dim_date(id):
     structured_dim_date["month"] = ""
     # 年(yyyy)
     structured_dim_date["year"] = ""
+    # 年生肖
+    structured_dim_date["zodiac"] = ""
+    # 当年年初
+    structured_dim_date["year_first_day"] = ""
+    # 当年年末
+    structured_dim_date["year_last_day"] = ""
     # 当月月初
     structured_dim_date["month_first_day"] = ""
     # 当月月末
@@ -50,17 +62,15 @@ def create_structured_dim_date(id):
 
     return structured_dim_date
 
-def generate_dim_date_dataset(data_size=100, ration=0):
+def generate_dim_date_dataset(start_date='2000-01-01', end_date='2025-12-31'):
     """
-    模拟生成产品库存的信息数据集
-    :param data_size:
-    :param ration:
+    生成真实数仓日期维度表
+    :param start_date: 开始日期
+    :param end_date: 结束日期
     :return:
     """
     datas = []
-    ids = ""
-
-    for id in ids:
-        datas.append(create_structured_dim_date(id))
+    for date in pd.date_range(start=start_date, end=end_date):
+        datas.append(create_structured_dim_date(id,date))
 
     return pd.DataFrame(datas)
