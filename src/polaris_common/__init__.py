@@ -5,8 +5,10 @@ from .common_constant import month_name_cn
 from .common_constant import week_name_cn
 from .common_constant import DatetimeFormat
 from .common_constant import solar_terms_cn
+from .common_constant import solar_terms
 from .common_utils import CommonUtils
 from .json_utils import JsonUtils
+# from holiday_utils import get_solar_term
 
 __all__ = [
     'HttpClient',
@@ -16,5 +18,6 @@ __all__ = [
     'solar_terms_cn',
     'CommonUtils',
     'JsonUtils',
+    # 'get_solar_term',
 ]
 
