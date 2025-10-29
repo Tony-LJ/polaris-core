@@ -45,9 +45,9 @@ def create_structured_dim_date(date):
     # 当月月末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["month_last_day"] = (date.replace(day=calendar.monthrange(date.year, date.month)[1]) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 当日日初(yyyy-MM-dd HH:mm:ss)
-    structured_dim_date["day_first_day"] = ""
+    structured_dim_date["day_first_day"] = date.replace(hour=0, minute=0, second=0, microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
     # 当日日末(yyyy-MM-dd HH:mm:ss)
-    structured_dim_date["day_last_day"] = ""
+    structured_dim_date["day_last_day"] = (date.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 本月第几天
     structured_dim_date["day_n_month"] = ""
     # 星期(数字)
