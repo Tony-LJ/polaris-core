@@ -8,7 +8,7 @@ file_name: datetime_utils.py
 import re
 from datetime import datetime
 import pytz
-
+import lunardate
 
 def get_current_time(format):
     """
@@ -137,7 +137,18 @@ def is_valid_date_format(date_string, format="%Y-%m-%d"):
             return date_string
         except ValueError:
             return None
+def get_lunar_dt(dt):
+    """
+    计算农历日期
+    :param dt:
+    :return:
+    """
+    ymd = dt.split('-')
+    lunar = lunardate.LunarDate.fromSolarDate(int(ymd[0]), int(ymd[1]), int(ymd[2]))
+    return "%d-%02d-%02d" % (lunar.year, lunar.month, lunar.day)
+
 
 if __name__ == '__main__':
     print(get_current_time("timestamp"))
     print(convert_date_format(is_valid_date_format("2025-2-29")))
+    print(get_lunar_dt("2025-03-29"))

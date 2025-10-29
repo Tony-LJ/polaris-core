@@ -12,7 +12,7 @@ import calendar
 import uuid
 import pandas as pd
 from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign, english_weekday_to_chinese, \
-    get_current_time, convert_date_format, is_valid_date_format, is_valid_date
+    get_current_time, convert_date_format, is_valid_date_format, is_valid_date, get_lunar_dt
 from datetime import datetime, timedelta
 from lunarcalendar import Converter
 import holidays
@@ -42,7 +42,7 @@ def create_structured_dim_date(date):
     # 24节气
     # structured_dim_date["solar_term"] = get_solar_term(date)
     # 农历日期-年月日(yyyy-MM-dd)
-    # structured_dim_date["lunar_date"] =  convert_date_format(is_valid_date_format(str((Converter.Solar2Lunar(date)).year) + "-" + str((Converter.Solar2Lunar(date)).month) + "-" + str((Converter.Solar2Lunar(date)).day)))
+    structured_dim_date["lunar_date"] = get_lunar_dt(date.strftime('%Y-%m-%d'))
     # 年月(yyyy-MM)
     structured_dim_date["year_month"] = date.strftime("%Y-%m")
     # 月(MM)
@@ -105,5 +105,5 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
 
 
 if __name__ == '__main__':
-    print(generate_dim_date_dataset(datetime(2024, 1, 1), datetime(2025, 12, 31)).to_string())
+    print(generate_dim_date_dataset(datetime(2009, 1, 1), datetime(2025, 12, 31)).to_string())
 
