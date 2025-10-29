@@ -84,6 +84,23 @@ def get_zodiac_year(year):
     ]
     return zodiac_animals[year % 12]
 
+def english_weekday_to_chinese(weekday_en):
+    """
+    英文星期转中文星期
+    :param weekday_en:
+    :return:
+    """
+    weekdays_en_to_cn = {
+        "Monday": "星期一",
+        "Tuesday": "星期二",
+        "Wednesday": "星期三",
+        "Thursday": "星期四",
+        "Friday": "星期五",
+        "Saturday": "星期六",
+        "Sunday": "星期日"
+    }
+    return weekdays_en_to_cn.get(weekday_en, "未知")
+
 
 if __name__ == '__main__':
     print(get_current_time("timestamp"))

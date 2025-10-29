@@ -9,7 +9,7 @@ file_name: dim_date_dataset.py
 import calendar
 import uuid
 import pandas as pd
-from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign
+from polaris_common.datetime_utils import get_zodiac_year, get_zodiac_sign, english_weekday_to_chinese
 from datetime import datetime, timedelta
 
 def get_day_record(day):
@@ -48,10 +48,12 @@ def create_structured_dim_date(date):
     structured_dim_date["day_first_day"] = date.replace(hour=0, minute=0, second=0, microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
     # 当日日末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["day_last_day"] = (date.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
+    # 本年第几天
+    structured_dim_date["day_n_year"] = ""
     # 本月第几天
     structured_dim_date["day_n_month"] = ""
-    # 星期(数字)
-    structured_dim_date["week_day"] = ""
+    # 星期
+    structured_dim_date["week_day"] = english_weekday_to_chinese(date.strftime("%A"))
     # 当年第几周
     structured_dim_date["week_n_year"] = ""
     # 年周
