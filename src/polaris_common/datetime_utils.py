@@ -46,6 +46,44 @@ def get_datetime_timezone(iso_str, time_zone, format):
 
     return formatted_datetime_str
 
+def get_zodiac_sign(month, day):
+    if (month == 1 and day >= 20) or (month == 2 and day <= 18):
+        return "水瓶座"
+    elif (month == 2 and day >= 19) or (month == 3 and day <= 20):
+        return "双鱼座"
+    elif (month == 3 and day >= 21) or (month == 4 and day <= 19):
+        return "白羊座"
+    elif (month == 4 and day >= 20) or (month == 5 and day <= 20):
+        return "金牛座"
+    elif (month == 5 and day >= 21) or (month == 6 and day <= 21):
+        return "双子座"
+    elif (month == 6 and day >= 22) or (month == 7 and day <= 22):
+        return "巨蟹座"
+    elif (month == 7 and day >= 23) or (month == 8 and day <= 22):
+        return "狮子座"
+    elif (month == 8 and day >= 23) or (month == 9 and day <= 22):
+        return "处女座"
+    elif (month == 9 and day >= 23) or (month == 10 and day <= 23):
+        return "天秤座"
+    elif (month == 10 and day >= 24) or (month == 11 and day <= 22):
+        return "天蝎座"
+    elif (month == 11 and day >= 23) or (month == 12 and day <= 21):
+        return "射手座"
+    else:
+        return "摩羯座"
+
+def get_zodiac_year(year):
+    """
+    根据年份计算生肖
+    :param year:
+    :return:
+    """
+    zodiac_animals = [
+        "鼠", "牛", "虎", "兔", "龙", "蛇",
+        "马", "羊", "猴", "鸡", "狗", "猪"
+    ]
+    return zodiac_animals[year % 12]
+
 
 if __name__ == '__main__':
     print(get_current_time("timestamp"))
