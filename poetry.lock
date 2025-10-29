@@ -623,6 +623,18 @@ files = [
 ]
 
 [[package]]
+name = "chinese-calendar"
+version = "1.10.0"
+description = "check if some day is holiday in China"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "chinese_calendar-1.10.0-py2.py3-none-any.whl", hash = "sha256:9ab1b535a2c41edb0d48a43762c314b51b9ffb36c19e7cd3963b306a20ba30c6"},
+    {file = "chinese_calendar-1.10.0.tar.gz", hash = "sha256:1e8c731fb21f79249becfdfff55bf097a7163e3ca76fb5b8107c499cc873ac42"},
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -1287,6 +1299,21 @@ six = ">=1.9.0"
 avro = ["fastavro (>=0.21.19)"]
 dataframe = ["fastavro (>=0.21.19)", "pandas (>=0.14.1)"]
 kerberos = ["requests-kerberos (>=0.7.0)"]
+
+[[package]]
+name = "holidays"
+version = "0.83"
+description = "Open World Holidays Framework"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "holidays-0.83-py3-none-any.whl", hash = "sha256:e36a368227b5b62129871463697bfde7e5212f6f77e43640320b727b79a875a8"},
+    {file = "holidays-0.83.tar.gz", hash = "sha256:99b97b002079ab57dac93295933907d2aae2742ad9a4d64fe33864dfae6805fa"},
+]
+
+[package.dependencies]
+python-dateutil = "*"
 
 [[package]]
 name = "httpcore"
@@ -4061,4 +4088,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "11e9ae6f8df04f0253da22465f970dbffb25290c21f839c854692e002eb43025"
+content-hash = "7742d9e7d61dd6aa740a495a860003e043fe22e48cba21db7404c7feab4674b9"

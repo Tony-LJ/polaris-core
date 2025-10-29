@@ -15,6 +15,16 @@ from datetime import datetime, timedelta
 from workalendar.asia import China
 from lunarcalendar import Converter
 import re
+from lunardate import LunarDate
+from chinese_calendar import solar_terms
+from holidays import CountryHoliday
+from pandas.tseries.holiday import (
+    HolidayCalendarFactory,
+    get_calendar,
+)
+import holidays
+
+cn_holidays = holidays.China()
 
 
 def get_day_record(day):
@@ -31,8 +41,10 @@ def create_structured_dim_date(date):
     structured_dim_date["id"] = uuid.uuid4()
     # 公历日期-年月日(yyyy-MM-dd)
     structured_dim_date["day"] = date
+    # 24节气
+    structured_dim_date["solar_term"] = ""
     # 农历日期-年月日(yyyy-MM-dd)
-    structured_dim_date["lunar_date1"] =  convert_date_format(is_valid_date_format(str((Converter.Solar2Lunar(date)).year) + "-" + str((Converter.Solar2Lunar(date)).month) + "-" + str((Converter.Solar2Lunar(date)).day)))
+    structured_dim_date["lunar_date"] =  convert_date_format(is_valid_date_format(str((Converter.Solar2Lunar(date)).year) + "-" + str((Converter.Solar2Lunar(date)).month) + "-" + str((Converter.Solar2Lunar(date)).day)))
     # 年月(yyyy-MM)
     structured_dim_date["year_month"] = date.strftime("%Y-%m")
     # 月(MM)
@@ -68,7 +80,7 @@ def create_structured_dim_date(date):
     # 是否工作日
     structured_dim_date["is_work_day"] = ""
     # 是否节假日
-    structured_dim_date["is_holiday"] = ""
+    structured_dim_date["is_holiday"] = cn_holidays.get(pd.Timestamp(date))
     # etl计算日
     structured_dim_date["etl_date"] = get_current_time("%Y-%m-%d %H:%M:%S")
 
