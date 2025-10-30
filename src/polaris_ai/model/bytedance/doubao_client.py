@@ -37,12 +37,12 @@ class DoubaoClient:
     def call_model(self,
                    model_name="doubao-seed-1-6-251015",
                    reasoning_effort="medium",
-                   messages=[{"role": "user", "content": "景旺电子2025年经营分析"}]):
+                   messages=[{"role": "user", "content": "2024中国经济分析"}]):
         """
         模型调用
         :param model_name: doubao-seed-1-6-251015
         :param reasoning_effort: medium
-        :param messages: [{"role": "user", "content": "景旺电子2025年经营分析"}]
+        :param messages: [{"role": "user", "content": "2024中国经济分析"}]
         :return:
         """
         client = self._create_client()
