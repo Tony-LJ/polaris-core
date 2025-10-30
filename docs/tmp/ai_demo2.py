@@ -15,25 +15,29 @@ print("----- image input request -----")
 completion = client.chat.completions.create(
     # 指定您创建的方舟推理接入点 ID，此处已帮您修改为您的推理接入点 ID
     model="doubao-seed-1-6-251015",
+    # messages=[
+    #     {
+    #         "role": "user",
+    #         "content": [
+    #             {
+    #                 "type": "image_url",
+    #                 "image_url": {
+    #                     "url": "https://ark-project.tos-cn-beijing.ivolces.com/images/view.jpeg"
+    #                 },
+    #             },
+    #             {"type": "text", "text": "这是哪里？"},
+    #         ],
+    #     }
+    # ],
     messages=[
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": "https://ark-project.tos-cn-beijing.ivolces.com/images/view.jpeg"
-                    },
-                },
-                {"type": "text", "text": "这是哪里？"},
-            ],
-        }
+        {"role": "user", "content": "我要研究深度思考模型与非深度思考模型区别的课题，体现出我的专业性"}
     ],
     reasoning_effort="medium"
 )
 if hasattr(completion.choices[0].message, 'reasoning_content'):
     print(completion.choices[0].message.reasoning_content)
 print(completion.choices[0].message.content)
+
 # Streaming:
 print("----- streaming request -----")
 stream = client.chat.completions.create(

@@ -12,6 +12,9 @@ public_api_tanshu = "https://api.tanshuapi.com/api/exchange/v1/index2"
 public_api_tanshu_key = "089ec3eb015de8e2fa0a23bb2233cdd8"
 # 高德地图
 public_api_autonavi_key = "7c3f7032f24c147fa7fce649cc01b374"
+# 火山引擎
+volcengine_base_url="https://ark.cn-beijing.volces.com/api/v3",
+volcengine_api_key="85f07a75-6d74-4c43-b3cf-f82a3a5024f1",
 
 # ################################# 数字相关
 capital_1to10= ["一","二","三","四","五","六","七","八","九","十"]
