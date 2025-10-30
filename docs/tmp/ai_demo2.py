@@ -29,9 +29,7 @@ completion = client.chat.completions.create(
     #         ],
     #     }
     # ],
-    messages=[
-        {"role": "user", "content": "景旺电子2025年经营分析"}
-    ],
+    messages=[{"role": "user", "content": "景旺电子2025年经营分析"}],
     reasoning_effort="medium"
 )
 if hasattr(completion.choices[0].message, 'reasoning_content'):

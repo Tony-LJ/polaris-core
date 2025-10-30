@@ -238,6 +238,12 @@ class FeiShuBot:
         """
         print("发送markdown消息")
 
+    def send_html_message(html_content):
+        """
+        发送HTML消息
+        :param html_content: HTML消息
+        """
+
 
 class DingDingBot:
     """

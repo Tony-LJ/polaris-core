@@ -11,7 +11,6 @@ import json
 import logging
 from typing import Any, Optional
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
