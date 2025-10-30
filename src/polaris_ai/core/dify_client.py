@@ -11,6 +11,7 @@ import os
 import mimetypes
 import json
 from typing import Optional
+import argparse
 
 
 class DifyClient:
@@ -131,4 +132,38 @@ class DifyClient:
                 return None
 
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Dify 对话流CLI")
+    parser.add_argument("--query", required=False, default="请翻译文件", help="要发送的消息内容")
+    parser.add_argument("--lang", required=False, default="中文", help="目标语言，如 中文/English/日本語 等")
+    parser.add_argument("--conv", required=False, default=None, help="已有的conversation_id，用于继续会话")
+    parser.add_argument("--file", required=False, default=None, help="文件名/绝对路径，或已上传的文件ID(UUID)")
+    args = parser.parse_args()
 
+    # 直接明文写API Key（仅示例，生产环境建议用环境变量）
+    DIFY_API_KEY = "你的API KEY"
+    DIFY_BASE_URL = "http://127.0.0.1"
+    USER_ID = "rongjie"
+    client = DifyClient(DIFY_API_KEY, DIFY_BASE_URL, USER_ID)
+    # 解析文件参数：
+    # - 若用户显式提供 --file，则优先使用（支持文件名/绝对路径/UUID）
+    # - 若用户未提供 --file 且也未提供 --conv，则使用默认同目录下的 "谷歌提示词.txt"
+    base_dir = os.path.dirname(__file__)
+    file_path = None
+    def _looks_like_uuid(value: str) -> bool:
+        parts = value.split("-")
+        return len(parts) == 5 and all(parts)
+    if args.file:
+        # 用户显式提供：若看起来像UUID则直传；否则按文件路径解析
+        file_arg = args.file
+        file_path = file_arg if _looks_like_uuid(file_arg) or os.path.isabs(file_arg) else os.path.join(base_dir, file_arg)
+    elif not args.conv:
+        # 首次便捷默认
+        file_path = os.path.join(base_dir, "谷歌提示词.txt")
+
+    # 发送
+    resp = client.send(query=args.query, conversation_id=args.conv, file_path=file_path, language=args.lang)
+    if resp and isinstance(resp, dict):
+        conv = resp.get("conversation_id") or args.conv
+        if conv:
+            print(f"[信息] 会话ID: {conv}")
