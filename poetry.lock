@@ -4465,6 +4465,31 @@ objprint = ">=0.3.0"
 full = ["orjson"]
 
 [[package]]
+name = "volcengine-python-sdk"
+version = "4.0.29"
+description = "Volcengine SDK for Python"
+optional = false
+python-versions = ">=2.7"
+groups = ["main"]
+files = [
+    {file = "volcengine_python_sdk-4.0.29-py2.py3-none-any.whl", hash = "sha256:fd96770b3e2bf4019818f4f52decc5f92402a1f3fe71daf8d7dfd9772ad4a506"},
+    {file = "volcengine_python_sdk-4.0.29.tar.gz", hash = "sha256:be5ef197c13710f71bc1a6ebad873e2d75f9235c198071d894a1e114b9151afb"},
+]
+
+[package.dependencies]
+anyio = {version = ">=3.5.0,<5", optional = true, markers = "extra == \"ark\""}
+certifi = ">=2017.4.17"
+cryptography = {version = ">=44.0.1", optional = true, markers = "extra == \"ark\""}
+httpx = {version = ">=0.23.0,<1", optional = true, markers = "extra == \"ark\""}
+pydantic = {version = ">=1.9.0,<3", optional = true, markers = "extra == \"ark\""}
+python-dateutil = ">=2.1"
+six = ">=1.16"
+urllib3 = ">=1.26.5"
+
+[package.extras]
+ark = ["anyio (>=3.5.0,<5)", "cached-property ; python_version < \"3.8\"", "cryptography (>=44.0.1)", "httpx (>=0.23.0,<1)", "pydantic (>=1.9.0,<3)"]
+
+[[package]]
 name = "w3lib"
 version = "2.3.1"
 description = "Library of web-related functions"
@@ -4729,4 +4754,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "c81b09a610642b91608546701909f8a96a954c08795f65756ad3d8bc4c193ef0"
+content-hash = "67b1ba28a0da1f380c8c4407067f1fd2fed5e17d807cffe8d38e3f7224baf28c"
