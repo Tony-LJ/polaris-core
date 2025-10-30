@@ -6,6 +6,8 @@ auther: lj.michale
 create_date: 2025/10/18 09:54
 file_name: ollama_client.py
 """
+import ollama
+
 
 
 class OllamaClient:
