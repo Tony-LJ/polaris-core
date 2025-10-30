@@ -209,6 +209,35 @@ class FeiShuBot:
             "Charset": "UTF-8"
         }
 
+    def send_text(self, content, mentioned_list=[], mentioned_mobile_list=[]):
+        """
+        发送文本消息
+        :param self:
+        :param content:
+        :param mentioned_list:
+        :param mentioned_mobile_list:
+        :return:
+        """
+        print("发送文本消息")
+
+    def send_markdown(self, content):
+        """
+        发送markdown消息
+        :param self:
+        :param content:
+        :param mentioned_list:
+        :param mentioned_mobile_list:
+        :return:
+        """
+        print("发送markdown消息")
+
+    def send_picture(self, image_path):
+        """
+        发送图片消息
+        :param image_path: 图片的绝对路径
+        """
+        print("发送markdown消息")
+
 
 class DingDingBot:
     """
@@ -226,4 +255,31 @@ class DingDingBot:
             "Charset": "UTF-8"
         }
 
+    def send_text(self, content, mentioned_list=[], mentioned_mobile_list=[]):
+        """
+        发送文本消息
+        :param self:
+        :param content:
+        :param mentioned_list:
+        :param mentioned_mobile_list:
+        :return:
+        """
+        print("发送文本消息")
 
+    def send_markdown(self, content):
+        """
+        发送markdown消息
+        :param self:
+        :param content:
+        :param mentioned_list:
+        :param mentioned_mobile_list:
+        :return:
+        """
+        print("发送markdown消息")
+
+    def send_picture(self, image_path):
+        """
+        发送图片消息
+        :param image_path: 图片的绝对路径
+        """
+        print("发送markdown消息")

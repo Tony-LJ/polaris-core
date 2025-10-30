@@ -30,13 +30,15 @@ completion = client.chat.completions.create(
     #     }
     # ],
     messages=[
-        {"role": "user", "content": "我要研究深度思考模型与非深度思考模型区别的课题，体现出我的专业性"}
+        {"role": "user", "content": "景旺电子2025年经营分析"}
     ],
     reasoning_effort="medium"
 )
 if hasattr(completion.choices[0].message, 'reasoning_content'):
     print(completion.choices[0].message.reasoning_content)
 print(completion.choices[0].message.content)
+
+
 
 # Streaming:
 print("----- streaming request -----")
