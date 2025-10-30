@@ -102,7 +102,6 @@ def example_ai_prediction(data):
     """
     # 模拟处理时间
     time.sleep(0.1)
-
     # 模拟预测逻辑
     return {"result": "positive", "confidence": 0.95}
 
