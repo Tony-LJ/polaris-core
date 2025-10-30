@@ -6,6 +6,7 @@ auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: common_constant.py
 """
+
 # ################################# 公共API
 # 探数
 public_api_tanshu = "https://api.tanshuapi.com/api/exchange/v1/index2"
