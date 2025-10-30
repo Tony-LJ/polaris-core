@@ -96,6 +96,6 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
     return pd.DataFrame(datas)
 
 
-if __name__ == '__main__':
-    print(generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31)).to_string())
+# if __name__ == '__main__':
+#     print(generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31)).to_string())
 

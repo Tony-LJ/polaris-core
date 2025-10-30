@@ -7,8 +7,11 @@ create_date: 2025/9/27 15:54
 file_name: common_constant.py
 """
 # ################################# 公共API
+# 探数
 public_api_tanshu = "https://api.tanshuapi.com/api/exchange/v1/index2"
 public_api_tanshu_key = "089ec3eb015de8e2fa0a23bb2233cdd8"
+# 高德地图
+public_api_autonavi_key = "7c3f7032f24c147fa7fce649cc01b374"
 
 # ################################# 数字相关
 capital_1to10= ["一","二","三","四","五","六","七","八","九","十"]
