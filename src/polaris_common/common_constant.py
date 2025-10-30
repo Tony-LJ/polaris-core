@@ -15,6 +15,9 @@ public_api_autonavi_key = "7c3f7032f24c147fa7fce649cc01b374"
 # 火山引擎
 volcengine_base_url="https://ark.cn-beijing.volces.com/api/v3",
 volcengine_api_key="85f07a75-6d74-4c43-b3cf-f82a3a5024f1",
+# deepseek
+deepseek_base_url="https://api.deepseek.com",
+deepseek_api_key="sk-96a9d87ee9e04dfcbe85b89ac9312531",
 
 # ################################# 数字相关
 capital_1to10= ["一","二","三","四","五","六","七","八","九","十"]
