@@ -93,13 +93,69 @@ class HiveClient:
             print(f"执行SQL失败: {e}")
             raise
 
+    def create_table(self,
+                     table_name: str,
+                     columns: dict,
+                     partitioned_by: Optional[dict] = None,
+                     file_format: str = 'TEXTFILE'):
+        """
+        创建Hive表
+        :param table_name: 表名
+        :param columns: 列定义字典 {列名: 类型}
+        :param partitioned_by: 分区列定义 {列名: 类型}
+        :param file_format: 文件格式，默认'TEXTFILE'
+        """
+        cols = ', '.join([f"{k} {v}" for k, v in columns.items()])
+        sql = f"CREATE TABLE {table_name} ({cols})"
+
+        if partitioned_by:
+            parts = ', '.join([f"{k} {v}" for k, v in partitioned_by.items()])
+            sql += f" PARTITIONED BY ({parts})"
+
+        sql += f" STORED AS {file_format}"
+        self.execute(sql, return_df=False)
+        print(f"表 {table_name} 创建成功")
 
 
 if __name__ == '__main__':
-    print(" >>>>>>>>>>>>>>>> ")
+    # 连接配置
+    config = {
+        'host': '10.53.0.71',
+        'port': 10000,
+        'username': 'root',
+        'password': '',
+        'database': 'bi_ads'
+    }
+
+    # 执行查询
+    with HiveClient(config) as connector:
+        # 返回DataFrame
+        df = connector.execute("SELECT * FROM bi_ads.ads_ves_archive_report_bi_ds LIMIT 10")
+        print(df.head())
+
+        # 返回原始结果
+        results = connector.execute("SHOW DATABASES", return_df=False)
+        print("数据库列表:", results)
 
 
-
+    # with HiveClient(**config) as connector:
+    #     # 创建分区表
+    #     connector.create_table(
+    #         table_name="test_table",
+    #         columns={
+    #             "id": "INT",
+    #             "name": "STRING",
+    #             "value": "DOUBLE"
+    #         },
+    #         partitioned_by={"dt": "STRING"}
+    #     )
+    #
+    #     # 插入数据
+    #     test_data = [
+    #         {"id": 1, "name": "Alice", "value": 10.5, "dt": "20231025"},
+    #         {"id": 2, "name": "Bob", "value": 20.3, "dt": "20231025"}
+    #     ]
+    #     connector.insert_data("test_table", test_data)
 
 
 
