@@ -21,12 +21,12 @@ class HiveClient:
     - 数据库元信息查询
     """
     def __init__(self,
-                 host: str,
-                 port: int = 10000,
-                 username: Optional[str] = None,
-                 password: Optional[str] = None,
-                 database: str = 'default',
-                 auth: str = 'NOSASL'):
+                 host,
+                 port,
+                 username,
+                 password,
+                 database = 'default',
+                 auth = None):
         """
         初始化连接参数
         :param host: Hive服务器地址
@@ -45,16 +45,28 @@ class HiveClient:
         self.connection = None
 
     def __enter__(self):
-        """支持with上下文管理"""
+        """
+        支持with上下文管理
+        :return:
+        """
         self.connect()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """退出上下文时自动关闭连接"""
+        """
+        退出上下文时自动关闭连接
+        :param exc_type:
+        :param exc_val:
+        :param exc_tb:
+        :return:
+        """
         self.close()
 
     def connect(self):
-        """建立Hive连接"""
+        """
+        建立Hive连接
+        :return:
+        """
         self.connection = hive.Connection(
             host=self.host,
             port=self.port,
@@ -66,7 +78,10 @@ class HiveClient:
         return self.connection
 
     def close(self):
-        """关闭连接"""
+        """
+        关闭连接
+        :return:
+        """
         if self.connection:
             self.connection.close()
             self.connection = None
@@ -119,43 +134,39 @@ class HiveClient:
 
 if __name__ == '__main__':
     # 连接配置
-    config = {
-        'host': '10.53.0.71',
-        'port': 10000,
-        'username': 'root',
-        'password': '',
-        'database': 'bi_ads'
-    }
+    hive_client = HiveClient(
+        host = '10.53.0.71',
+        port = 10000,
+        username = 'root',
+        password = '',
+        database = 'bi_ads',
+        auth = 'CUSTOM'
+    )
 
     # 执行查询
-    with HiveClient(config) as connector:
-        # 返回DataFrame
-        df = connector.execute("SELECT * FROM bi_ads.ads_ves_archive_report_bi_ds LIMIT 10")
-        print(df.head())
+    df = hive_client.execute("SELECT * FROM bi_ads.ads_ves_archive_report_bi_ds LIMIT 10")
+    print(df.head())
+    # 返回原始结果
+    results = hive_client.execute("SHOW DATABASES", return_df=False)
+    print("数据库列表:", results)
 
-        # 返回原始结果
-        results = connector.execute("SHOW DATABASES", return_df=False)
-        print("数据库列表:", results)
-
-
-    # with HiveClient(**config) as connector:
-    #     # 创建分区表
-    #     connector.create_table(
-    #         table_name="test_table",
-    #         columns={
-    #             "id": "INT",
-    #             "name": "STRING",
-    #             "value": "DOUBLE"
-    #         },
-    #         partitioned_by={"dt": "STRING"}
-    #     )
+    # # 创建分区表
+    # hive_client.create_table(
+    #     table_name="test_table",
+    #     columns={
+    #         "id": "INT",
+    #         "name": "STRING",
+    #         "value": "DOUBLE"
+    #     },
+    #     partitioned_by={"dt": "STRING"}
+    # )
     #
-    #     # 插入数据
-    #     test_data = [
-    #         {"id": 1, "name": "Alice", "value": 10.5, "dt": "20231025"},
-    #         {"id": 2, "name": "Bob", "value": 20.3, "dt": "20231025"}
-    #     ]
-    #     connector.insert_data("test_table", test_data)
+    # # 插入数据
+    # test_data = [
+    #     {"id": 1, "name": "Alice", "value": 10.5, "dt": "20231025"},
+    #     {"id": 2, "name": "Bob", "value": 20.3, "dt": "20231025"}
+    # ]
+    # hive_client.insert_data("test_table", test_data)
 
 
 
