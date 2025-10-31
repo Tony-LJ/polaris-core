@@ -28,7 +28,7 @@ def create_structured_dim_date(date):
     :return:
     """
     structured_dim_date = {}
-    structured_dim_date["id"] = uuid.uuid4()
+    structured_dim_date["id"] = str(uuid.uuid4()).replace('-', '')
     # 公历日期-年月日(yyyy-MM-dd)
     structured_dim_date["day"] = date
     # 公历日期-年月日(yyyyMMdd)
@@ -60,15 +60,15 @@ def create_structured_dim_date(date):
     # 当日日末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["day_last_day"] = (date.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
     # 当年第几天
-    structured_dim_date["day_n_year"] = date.timetuple().tm_yday
+    structured_dim_date["day_n_year"] = str(date.timetuple().tm_yday)
     # 当月第几天
-    structured_dim_date["day_n_month"] = (date - date.replace(day=1)).days + 1
+    structured_dim_date["day_n_month"] = str((date - date.replace(day=1)).days + 1)
     # 星期
     structured_dim_date["week_day"] = english_weekday_to_chinese(date.strftime("%A"))
     # 当年第几周
-    structured_dim_date["week_n_year"] = date.isocalendar().week
+    structured_dim_date["week_n_year"] = str(date.isocalendar().week)
     # 季度
-    structured_dim_date["quarter"] = (date.month - 1) // 3 + 1
+    structured_dim_date["quarter"] = str((date.month - 1) // 3 + 1)
     # 是否工作日
     structured_dim_date["is_work_day"] = is_workdays(date)
     # 是否节假日
@@ -99,8 +99,12 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
 
 
 if __name__ == '__main__':
-    print(generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31)).to_string())
-    df = generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31))
+    current_year = datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").year
+    current_month =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").month
+    current_day =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").day
+
+    # print(generate_dim_date_dataset(datetime(2015, 1, 1), datetime(2025, 12, 31)).to_string())
+    df = generate_dim_date_dataset(datetime(2015, 1, 1), datetime(current_year, current_month, current_day))
     pool = ImpalaClient(
         host='10.53.0.71',
         database='impala',
@@ -108,7 +112,6 @@ if __name__ == '__main__':
         password='',
         port=21050
     )
-
     insert_sql = f''' INSERT INTO bi_data.dim_date_ds (
                  id
                 ,day
@@ -135,6 +138,12 @@ if __name__ == '__main__':
                 ,etl_date
                 ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 '''
-    pool.insert(insert_sql)
+    conn = pool._get_conn()
+    cursor = conn.cursor()
+    cursor.execute("TRUNCATE TABLE bi_data.dim_date_ds")
+    print(df.apply(tuple, axis=1).tolist())
+
+    for record in df.apply(tuple, axis=1).tolist():
+        cursor.execute(insert_sql, record)
 
 
