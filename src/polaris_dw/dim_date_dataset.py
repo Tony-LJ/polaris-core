@@ -97,53 +97,53 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
 
     return pd.DataFrame(datas)
 
-
-if __name__ == '__main__':
-    current_year = datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").year
-    current_month =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").month
-    current_day =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").day
-
-    # print(generate_dim_date_dataset(datetime(2015, 1, 1), datetime(2025, 12, 31)).to_string())
-    df = generate_dim_date_dataset(datetime(2015, 1, 1), datetime(current_year, current_month, current_day))
-    pool = ImpalaClient(
-        host='10.53.0.71',
-        database='impala',
-        user='root',
-        password='',
-        port=21050
-    )
-    insert_sql = f''' INSERT INTO bi_data.dim_date_ds (
-                 id
-                ,day
-                ,day2
-                ,lunar_date
-                ,year_month
-                ,month
-                ,year
-                ,zodiac
-                ,aries
-                ,year_first_day
-                ,year_last_day
-                ,month_first_day
-                ,month_last_day
-                ,day_first_day
-                ,day_last_day
-                ,day_n_year
-                ,day_n_month
-                ,week_day
-                ,week_n_year
-                ,quarter
-                ,is_work_day
-                ,is_holiday
-                ,etl_date
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                '''
-    conn = pool._get_conn()
-    cursor = conn.cursor()
-    cursor.execute("TRUNCATE TABLE bi_data.dim_date_ds")
-    print(df.apply(tuple, axis=1).tolist())
-
-    for record in df.apply(tuple, axis=1).tolist():
-        cursor.execute(insert_sql, record)
+#
+# if __name__ == '__main__':
+#     current_year = datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").year
+#     current_month =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").month
+#     current_day =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").day
+#
+#     # print(generate_dim_date_dataset(datetime(2015, 1, 1), datetime(2025, 12, 31)).to_string())
+#     df = generate_dim_date_dataset(datetime(2015, 1, 1), datetime(current_year, current_month, current_day))
+#     pool = ImpalaClient(
+#         host='10.53.0.71',
+#         database='impala',
+#         user='root',
+#         password='',
+#         port=21050
+#     )
+#     insert_sql = f''' INSERT INTO bi_data.dim_date_ds (
+#                  id
+#                 ,day
+#                 ,day2
+#                 ,lunar_date
+#                 ,year_month
+#                 ,month
+#                 ,year
+#                 ,zodiac
+#                 ,aries
+#                 ,year_first_day
+#                 ,year_last_day
+#                 ,month_first_day
+#                 ,month_last_day
+#                 ,day_first_day
+#                 ,day_last_day
+#                 ,day_n_year
+#                 ,day_n_month
+#                 ,week_day
+#                 ,week_n_year
+#                 ,quarter
+#                 ,is_work_day
+#                 ,is_holiday
+#                 ,etl_date
+#                 ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+#                 '''
+#     conn = pool._get_conn()
+#     cursor = conn.cursor()
+#     cursor.execute("TRUNCATE TABLE bi_data.dim_date_ds")
+#     print(df.apply(tuple, axis=1).tolist())
+#
+#     for record in df.apply(tuple, axis=1).tolist():
+#         cursor.execute(insert_sql, record)
 
 
