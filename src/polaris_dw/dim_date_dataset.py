@@ -17,6 +17,7 @@ import holidays
 from datetime import datetime
 from dateutil.rrule import rrule, DAILY
 from polaris_common.holiday_utils import is_workdays
+from polaris_connector.impala.impala_client import ImpalaClient
 
 cn_holidays = holidays.China()
 
@@ -58,9 +59,9 @@ def create_structured_dim_date(date):
     structured_dim_date["day_first_day"] = date.replace(hour=0, minute=0, second=0, microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
     # 当日日末(yyyy-MM-dd HH:mm:ss)
     structured_dim_date["day_last_day"] = (date.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) - timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
-    # 本年第几天
+    # 当年第几天
     structured_dim_date["day_n_year"] = date.timetuple().tm_yday
-    # 本月第几天
+    # 当月第几天
     structured_dim_date["day_n_month"] = (date - date.replace(day=1)).days + 1
     # 星期
     structured_dim_date["week_day"] = english_weekday_to_chinese(date.strftime("%A"))
@@ -97,6 +98,43 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
     return pd.DataFrame(datas)
 
 
-# if __name__ == '__main__':
-#     print(generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31)).to_string())
+if __name__ == '__main__':
+    print(generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31)).to_string())
+    df = generate_dim_date_dataset(datetime(2023, 1, 1), datetime(2025, 12, 31))
+    pool = ImpalaClient(
+        host='10.53.0.71',
+        database='impala',
+        user='root',
+        password='',
+        port=21050
+    )
+
+    insert_sql = f''' INSERT INTO bi_data.dim_date_ds (
+                 id
+                ,day
+                ,day2
+                ,lunar_date
+                ,year_month
+                ,month
+                ,year
+                ,zodiac
+                ,aries
+                ,year_first_day
+                ,year_last_day
+                ,month_first_day
+                ,month_last_day
+                ,day_first_day
+                ,day_last_day
+                ,day_n_year
+                ,day_n_month
+                ,week_day
+                ,week_n_year
+                ,quarter
+                ,is_work_day
+                ,is_holiday
+                ,etl_date
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                '''
+    pool.insert(insert_sql)
+
 
