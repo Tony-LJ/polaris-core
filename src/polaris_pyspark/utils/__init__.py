@@ -2,7 +2,7 @@
 import logging
 import os
 import re
-import subprocess
+# import subprocess
 import uuid
 from contextlib import contextmanager
 from datetime import datetime, timedelta
@@ -91,7 +91,8 @@ def dfs_ls(path, spark=None, sort_by_mtime=True):
     output_cols = ["perm", "rep", "owner", "group", "size", "mtime", "path"]
 
     if not spark:
-        pathes = subprocess.check_output("hdfs dfs -ls {}".format(path).split()).strip().split('\n')
+        pathes = ""
+        # pathes = subprocess.check_output("hdfs dfs -ls {}".format(path).split()).strip().split('\n')
         if len(pathes) > 0 and pathes[0].startswith("Found"):  # 首行为类似"Found 90646 items"时直接丢掉
             pathes.pop(0)
         pathes_df = pd.DataFrame(map(str.split, pathes),

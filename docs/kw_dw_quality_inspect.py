@@ -11,6 +11,8 @@ from polaris_message.massage_push_bot import WechatBot
 from polaris_kw import send_dw_quality_markdown_msg
 from datetime import datetime
 from impala.dbapi import connect
+from polaris_connector.mysql import MysqlClient
+
 
 def config_read_ini():
     db_host_o="10.53.0.71"
@@ -39,7 +41,6 @@ def sql_impala_read(sql):
 
     return res_list
 
-
 def match_check_type(pattern, s):
     """
      匹配
@@ -50,8 +51,14 @@ def match_check_type(pattern, s):
     return re.search(pattern, s)
 
 if __name__ == '__main__':
-
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
+    mysql_client = MysqlClient(
+        host='10.53.0.71',
+        database='bigdata',
+        user='root',
+        password='LJkwhadoop2025!',
+        port=3306
+    )
     # webhook_url = "https://work.weixin.qq.com/wework_admin/common/openBotProfile/24ecfe4b4e965b4fa53c23bf699d09c849"
     webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f318a3b2-383b-451c-bef3-e637c8df4b07"
     msg_rebot = WechatBot(webhook_url)
@@ -66,12 +73,25 @@ if __name__ == '__main__':
                           ,remark
                           ,threshold_min
                           ,threshold_max
+                          ,DATE_FORMAT(create_time, '%Y-%m-%d') as create_time
+                          ,DATE_FORMAT(last_update_time, '%Y-%m-%d') as last_update_time
+                          ,is_holidays_sensitive
+                          ,importance
+                          ,creator
+                     from bigdata.dw_quality_check_rules '''
+    meta_sql2 = f''' select id
+                          ,check_type
+                          ,table_name
+                          ,check_sql
+                          ,remark
+                          ,threshold_min
+                          ,threshold_max
                           ,create_time
                           ,last_update_time
                           ,creator
                           ,importance 
                      from bi_ods.dw_quality_check_rules_v1 '''
-    meta_list = sql_impala_read(meta_sql)
+    meta_list = mysql_client.query(meta_sql)
 
     quality_error_lst = []   # 错误检测结果收集列表
     error_list = []
@@ -82,9 +102,17 @@ if __name__ == '__main__':
     zhunquexing_results = []
 
     for i in range(len(meta_list)):
-        subset = meta_list[i]
-        # id 表名，检测代码，上下限阈值
-        id,check_type,table_name,check_sql,threshold_min,threshold_max,importance = subset[0],subset[1],subset[2],subset[3],subset[5],subset[6],subset[10]
+        rule_record = meta_list[i]
+
+        id = rule_record["id"]
+        check_type = rule_record["check_type"]
+        table_name = rule_record["table_name"]
+        check_sql = rule_record["check_sql"]
+        threshold_min = rule_record["threshold_min"]
+        threshold_max = rule_record["threshold_max"]
+        importance = rule_record["importance"]
+        is_holidays_sensitive = rule_record["is_holidays_sensitive"]
+        creator = rule_record["creator"]
         print("数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{},最小阀值:{},最大阀值:{},重要性:{}".format(i,check_type,table_name,check_sql,threshold_min,threshold_max,importance))
 
         if check_type == "完整性":
@@ -116,20 +144,28 @@ if __name__ == '__main__':
 
         elif check_type == "准确性":
             meta_cnt = sql_impala_read(check_sql)
-            if meta_cnt[0][0] < threshold_min:
+            if(meta_cnt[0][0] is not None):
+                ss = meta_cnt[0]
+                if meta_cnt[0][0] < threshold_min:
+                    result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                    quality_error_lst.append(result_set)
+                    print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                    error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
+                    zhunquexing_results.append(table_name)
+                elif meta_cnt[0][0] > threshold_max:
+                    result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
+                    quality_error_lst.append(result_set)
+                    print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
+                    error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
+                    zhunquexing_results.append(table_name)
+                else:
+                    print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
+            else:
                 result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
                 quality_error_lst.append(result_set)
                 print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhunquexing_results.append(table_name)
-            elif meta_cnt[0][0] > threshold_max:
-                result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
-                quality_error_lst.append(result_set)
-                print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
-                error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
-                zhunquexing_results.append(table_name)
-        else:
-            print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
 
     # ############# 数仓质检评估规则
     if len(quality_error_lst) == 0:
@@ -145,7 +181,7 @@ if __name__ == '__main__':
                                                   quality_error_lst,
                                                   important_error_list,
                                                   wanzhengxing_results, yizhixing_results, zhujianweiyi_results, zhunquexing_results)
-    msg_rebot.send_markdown(content=report_content)
+    # msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
 
     # TODO:

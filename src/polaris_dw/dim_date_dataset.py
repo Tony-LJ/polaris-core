@@ -97,7 +97,7 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
 
     return pd.DataFrame(datas)
 
-#
+
 # if __name__ == '__main__':
 #     current_year = datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").year
 #     current_month =  datetime.strptime(get_current_time("%Y-%m-%d"), "%Y-%m-%d").month
@@ -112,7 +112,7 @@ def generate_dim_date_dataset(start_datetime, end_datetime):
 #         password='',
 #         port=21050
 #     )
-#     insert_sql = f''' INSERT INTO bi_data.dim_date_ds (
+#     insert_sql = f''' INSERT INTO bi_data.dim_public_date_ds (
 #                  id
 #                 ,day
 #                 ,day2
