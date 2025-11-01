@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-descr: 数仓质检
+descr: 数仓质检报告消息markdown模版
 auther: lj.michale
 create_date: 2025/9/27 15:54
 file_name: kw_mardown_msg.py
@@ -15,7 +15,8 @@ def send_dw_quality_markdown_msg(current_date,
                                  yizhixing_list,
                                  zhujianweiyi_list,
                                  zhunquexing_list,
-                                 error_cause_dict):
+                                 error_cause_dict,
+                                 responsible_list):
     """
     发送数仓质检markdown报告
     :param current_date:
@@ -27,6 +28,7 @@ def send_dw_quality_markdown_msg(current_date,
     :param zhujianweiyi_list:
     :param zhunquexing_list:
     :param error_cause_dict:
+    :param responsible_list:
     :return:
     """
     report_content = f'''# **每日数仓质检报告**
@@ -36,9 +38,10 @@ def send_dw_quality_markdown_msg(current_date,
                          > **质检规则数**: <font color='black'> {len(meta_list)} </font>
                          > **质检异常数**: <font color='red'> {len(quality_error_list)} </font> 
                          > **质检得分**: <font color='green'> {round(((len(meta_list)-len(quality_error_list))/len(meta_list)) * 100, 2)} </font> 
+                         > **质检异常负责人**: <font color='black'> {responsible_list} </font>
                          > **质检重要异常列表**: <font color='black'> {important_error_list} </font> 
                          > **质检全部异常列表**: <font color='black'> 完整性异常:{wanzhengxing_list},\n 一致性异常:{yizhixing_list},\n 主键唯一异常:{zhujianweiyi_list},\n 准确性异常:{zhunquexing_list} </font> 
-                         > **质检异常原因列表**: <font color='black'> 完整性异常原因:{wanzhengxing_list},\n 一致性异常原因:{yizhixing_list},\n 主键唯一异常原因:{zhujianweiyi_list},\n 准确性异常原因:{zhunquexing_list} </font> 
+                         > **质检异常原因列表**: <font color='black'> 完整性异常原因:{error_cause_dict["完整性"]},\n 一致性异常原因:{error_cause_dict["一致性"]},\n 主键唯一异常原因:{error_cause_dict["主键唯一"]},\n 准确性异常原因:{error_cause_dict["准确性"]} </font> 
     '''
 
     return report_content

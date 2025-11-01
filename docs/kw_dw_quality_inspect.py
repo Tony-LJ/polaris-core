@@ -89,7 +89,10 @@ if __name__ == '__main__':
     yizhixing_results = []
     zhujianweiyi_results = []
     zhunquexing_results = []
+    # 异常具体原因列表
     error_cause_dict = {'完整性': [], '主键唯一': [], '一致性': [], '准确性': []}
+    # 负责人列表
+    responsible_list = []
 
     for i in range(len(meta_list)):
         rule_record = meta_list[i]
@@ -115,7 +118,7 @@ if __name__ == '__main__':
                 wanzhengxing_results.append(table_name)
                 error_cause = table_name + "数据记录为0" + ",SQL查询语句:" + check_sql
                 error_cause_dict['完整性'].append(error_cause)
-
+                responsible_list.append(creator)
         elif check_type == "主键唯一":
             meta_cnt = sql_impala_read(check_sql)
             if meta_cnt[0][0] > 0:
@@ -126,6 +129,7 @@ if __name__ == '__main__':
                 zhujianweiyi_results.append(table_name)
                 error_cause = table_name + "主键不唯一" + ",SQL查询语句:" + check_sql
                 error_cause_dict['主键唯一'].append(error_cause)
+                responsible_list.append(creator)
         elif check_type == "一致性":
             meta_cnt = sql_impala_read(check_sql)
             if meta_cnt[0][0] > 0:
@@ -136,7 +140,7 @@ if __name__ == '__main__':
                 yizhixing_results.append(table_name)
                 error_cause = table_name + "数据不一致性" + ",SQL查询语句:" + check_sql
                 error_cause_dict['一致性'].append(error_cause)
-
+                responsible_list.append(creator)
         elif check_type == "准确性":
             meta_cnt = sql_impala_read(check_sql)
             if(meta_cnt[0][0] is not None):
@@ -147,16 +151,18 @@ if __name__ == '__main__':
                     print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                     error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                     zhunquexing_results.append(table_name)
-                    error_cause = table_name + "数据指标<最低值:"+ threshold_min+ ",SQL查询语句:" + check_sql
+                    error_cause = table_name + "数据指标<最低值:"+ str(threshold_min)+ ",SQL查询语句:" + check_sql
                     error_cause_dict['准确性'].append(error_cause)
+                    responsible_list.append(creator)
                 elif meta_cnt[0][0] > threshold_max:
                     result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
                     quality_error_lst.append(result_set)
                     print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                     error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                     zhunquexing_results.append(table_name)
-                    error_cause = table_name + "数据指标>最高值:"+ threshold_min+ ",SQL查询语句:" + check_sql
+                    error_cause = table_name + "数据指标>最高值:"+ str(threshold_max) + ",SQL查询语句:" + check_sql
                     error_cause_dict['准确性'].append(error_cause)
+                    responsible_list.append(creator)
                 else:
                     print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
             else:
@@ -165,8 +171,9 @@ if __name__ == '__main__':
                 print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhunquexing_results.append(table_name)
-                error_cause = table_name + "数据指标为None:"+ threshold_min+ ",SQL查询语句:" + check_sql
+                error_cause = table_name + "数据指标为None:" + ",SQL查询语句:" + check_sql
                 error_cause_dict['准确性'].append(error_cause)
+                responsible_list.append(creator)
 
     # ############# 数仓质检评估规则
     if len(quality_error_lst) == 0:
@@ -183,7 +190,8 @@ if __name__ == '__main__':
                                                   important_error_list,
                                                   wanzhengxing_results,
                                                   yizhixing_results,
-                                                  zhujianweiyi_results, zhunquexing_results,error_cause_dict)
+                                                  zhujianweiyi_results,
+                                                  zhunquexing_results,error_cause_dict,responsible_list)
     msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
     # TODO:
