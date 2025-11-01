@@ -59,12 +59,13 @@ if __name__ == '__main__':
         password='LJkwhadoop2025!',
         port=3306
     )
-    # webhook_url = "https://work.weixin.qq.com/wework_admin/common/openBotProfile/24ecfe4b4e965b4fa53c23bf699d09c849"
-    webhook_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f318a3b2-383b-451c-bef3-e637c8df4b07"
-    msg_rebot = WechatBot(webhook_url)
+    PROD_WAREHOUSE_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
+    # PROD_QUALITY_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f318a3b2-383b-451c-bef3-e637c8df4b07"
+    msg_rebot = WechatBot(PROD_WAREHOUSE_WEBHOOK_URL)
     now = datetime.now()
     current_date = now.strftime('%Y-%m-%d %H:%M:%S')
     impala_ini = config_read_ini()
+
     # ############# 查询风控规则库
     meta_sql = f''' select id
                           ,check_type
@@ -79,18 +80,6 @@ if __name__ == '__main__':
                           ,importance
                           ,creator
                      from bigdata.dw_quality_check_rules '''
-    meta_sql2 = f''' select id
-                          ,check_type
-                          ,table_name
-                          ,check_sql
-                          ,remark
-                          ,threshold_min
-                          ,threshold_max
-                          ,create_time
-                          ,last_update_time
-                          ,creator
-                          ,importance 
-                     from bi_ods.dw_quality_check_rules_v1 '''
     meta_list = mysql_client.query(meta_sql)
 
     quality_error_lst = []   # 错误检测结果收集列表
@@ -100,6 +89,7 @@ if __name__ == '__main__':
     yizhixing_results = []
     zhujianweiyi_results = []
     zhunquexing_results = []
+    error_cause_dict = {'完整性': [], '主键唯一': [], '一致性': [], '准确性': []}
 
     for i in range(len(meta_list)):
         rule_record = meta_list[i]
@@ -123,6 +113,8 @@ if __name__ == '__main__':
                 print("【完整性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 wanzhengxing_results.append(table_name)
+                error_cause = table_name + "数据记录为0" + ",SQL查询语句:" + check_sql
+                error_cause_dict['完整性'].append(error_cause)
 
         elif check_type == "主键唯一":
             meta_cnt = sql_impala_read(check_sql)
@@ -132,7 +124,8 @@ if __name__ == '__main__':
                 print("【主键唯一】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhujianweiyi_results.append(table_name)
-
+                error_cause = table_name + "主键不唯一" + ",SQL查询语句:" + check_sql
+                error_cause_dict['主键唯一'].append(error_cause)
         elif check_type == "一致性":
             meta_cnt = sql_impala_read(check_sql)
             if meta_cnt[0][0] > 0:
@@ -141,6 +134,8 @@ if __name__ == '__main__':
                 print("【一致性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 yizhixing_results.append(table_name)
+                error_cause = table_name + "数据不一致性" + ",SQL查询语句:" + check_sql
+                error_cause_dict['一致性'].append(error_cause)
 
         elif check_type == "准确性":
             meta_cnt = sql_impala_read(check_sql)
@@ -152,12 +147,16 @@ if __name__ == '__main__':
                     print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                     error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                     zhunquexing_results.append(table_name)
+                    error_cause = table_name + "数据指标<最低值:"+ threshold_min+ ",SQL查询语句:" + check_sql
+                    error_cause_dict['准确性'].append(error_cause)
                 elif meta_cnt[0][0] > threshold_max:
                     result_set = ['error',table_name,id,meta_cnt[0][0],check_type]
                     quality_error_lst.append(result_set)
                     print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                     error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                     zhunquexing_results.append(table_name)
+                    error_cause = table_name + "数据指标>最高值:"+ threshold_min+ ",SQL查询语句:" + check_sql
+                    error_cause_dict['准确性'].append(error_cause)
                 else:
                     print(f'''质量检测任务成功==>任务id={id}==>表名={table_name}''')
             else:
@@ -166,6 +165,8 @@ if __name__ == '__main__':
                 print("【准确性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 zhunquexing_results.append(table_name)
+                error_cause = table_name + "数据指标为None:"+ threshold_min+ ",SQL查询语句:" + check_sql
+                error_cause_dict['准确性'].append(error_cause)
 
     # ############# 数仓质检评估规则
     if len(quality_error_lst) == 0:
@@ -180,10 +181,11 @@ if __name__ == '__main__':
                                                   meta_list,
                                                   quality_error_lst,
                                                   important_error_list,
-                                                  wanzhengxing_results, yizhixing_results, zhujianweiyi_results, zhunquexing_results)
-    # msg_rebot.send_markdown(content=report_content)
+                                                  wanzhengxing_results,
+                                                  yizhixing_results,
+                                                  zhujianweiyi_results, zhunquexing_results,error_cause_dict)
+    msg_rebot.send_markdown(content=report_content)
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end !")
-
     # TODO:
     #  1.巡检报告中新增巡检人员栏目
     #  2.质检异常简易修复(还未提)

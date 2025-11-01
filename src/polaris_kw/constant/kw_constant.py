@@ -4,7 +4,7 @@
 # 数仓质检报告消息推送企微机器人
 PROD_QUALITY_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f318a3b2-383b-451c-bef3-e637c8df4b07"
 # 数仓调度消息推送企微机器人
-PROD_WAREHOUSE_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key="
+PROD_WAREHOUSE_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=34f51e63-9ab5-43fa-8621-377b7bf70064"
 # UTC环境消息推送企微机器人
 PROD_WAREHOUSE_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key="
 # KW数据智能助手机器人

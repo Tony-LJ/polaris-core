@@ -14,7 +14,8 @@ def send_dw_quality_markdown_msg(current_date,
                                  wanzhengxing_list,
                                  yizhixing_list,
                                  zhujianweiyi_list,
-                                 zhunquexing_list):
+                                 zhunquexing_list,
+                                 error_cause_dict):
     """
     发送数仓质检markdown报告
     :param current_date:
@@ -25,6 +26,7 @@ def send_dw_quality_markdown_msg(current_date,
     :param yizhixing_list:
     :param zhujianweiyi_list:
     :param zhunquexing_list:
+    :param error_cause_dict:
     :return:
     """
     report_content = f'''# **每日数仓质检报告**
@@ -36,6 +38,7 @@ def send_dw_quality_markdown_msg(current_date,
                          > **质检得分**: <font color='green'> {round(((len(meta_list)-len(quality_error_list))/len(meta_list)) * 100, 2)} </font> 
                          > **质检重要异常列表**: <font color='black'> {important_error_list} </font> 
                          > **质检全部异常列表**: <font color='black'> 完整性异常:{wanzhengxing_list},\n 一致性异常:{yizhixing_list},\n 主键唯一异常:{zhujianweiyi_list},\n 准确性异常:{zhunquexing_list} </font> 
+                         > **质检异常原因列表**: <font color='black'> 完整性异常原因:{wanzhengxing_list},\n 一致性异常原因:{yizhixing_list},\n 主键唯一异常原因:{zhujianweiyi_list},\n 准确性异常原因:{zhunquexing_list} </font> 
     '''
 
     return report_content
