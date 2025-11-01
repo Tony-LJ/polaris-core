@@ -45,6 +45,7 @@ dependencies = [
     "holidays (>=0.83,<0.84)",
     "chinese-calendar (>=1.10.0,<2.0.0)",
     "flask (>=3.1.2,<4.0.0)",
+    "paramiko (>=4.0.0,<5.0.0)",
     "nacos-sdk-python (>=2.0.9,<3.0.0)",
     "volcengine-python-sdk[ark] (>=4.0.29,<5.0.0)",
 ]
