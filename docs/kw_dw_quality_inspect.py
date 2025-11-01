@@ -50,6 +50,15 @@ def match_check_type(pattern, s):
     """
     return re.search(pattern, s)
 
+def execute_shell(command):
+    """
+    执行shell语句
+    :param command:
+    :return:
+    """
+    print(" >>>>>>>>>> ")
+
+
 if __name__ == '__main__':
     print(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start !")
     mysql_client = MysqlClient(
@@ -138,7 +147,7 @@ if __name__ == '__main__':
                 print("【一致性】 => 数仓风控规则:{},检查类型:{},表名:{},具体检测规则:{}".format(i,check_type,table_name,check_sql))
                 error_list.append("{}{}检查规则异常 ".format(table_name,check_type))
                 yizhixing_results.append(table_name)
-                error_cause = table_name + "数据不一致性" + ",SQL查询语句:" + check_sql
+                error_cause = table_name + "对比数据不一致" + ",SQL查询语句:" + check_sql
                 error_cause_dict['一致性'].append(error_cause)
                 responsible_list.append(creator)
         elif check_type == "准确性":
