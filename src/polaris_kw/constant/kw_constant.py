@@ -10,4 +10,10 @@ PROD_WAREHOUSE_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?k
 # KW数据智能助手机器人
 PROD_INTELLIGENT_ASSISTANT_ROBOT_URL = "https://work.weixin.qq.com/wework_admin/common/openBotProfile/24411e21f0114006b02886e5cecbaf936e"
 
+# ###################### 数仓
+KW_DW_DATA_DOMAIN={"":"","":"","":"","":"","":"","":"",}
+
+
+
+
 # ###################### 其他
